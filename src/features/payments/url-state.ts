@@ -17,8 +17,6 @@ function selected<T extends string>(
 }
 export function parsePaymentsUrl(params: URLSearchParams): PaymentsState {
   const state = initialPaymentsState();
-  if (params.get("view") === "disputed" || params.get("view") === "uncaptured")
-    state.filters.view = params.get("view") as "disputed" | "uncaptured";
   state.filters.search = (params.get("q") ?? "").slice(0, 200);
   state.filters.statuses = selected(params, "status", PAYMENT_STATUSES);
   state.filters.methods = selected(params, "method", [
@@ -65,7 +63,6 @@ export function serializePaymentsUrl(
   const params = new URLSearchParams();
   const { filters, sort, page, pageSize } = state;
   params.set("at", referenceTime);
-  if (filters.view !== "all") params.set("view", filters.view);
   if (filters.search) params.set("q", filters.search);
   if (filters.statuses.length) params.set("status", filters.statuses.join(","));
   if (filters.methods.length) params.set("method", filters.methods.join(","));

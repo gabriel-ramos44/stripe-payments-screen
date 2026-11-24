@@ -31,8 +31,6 @@ export type Payment = {
   amountMinor: number;
   currency: Currency;
   status: PaymentStatus;
-  disputed: boolean;
-  captureState: "captured" | "uncaptured" | "not_applicable";
   method: PaymentMethod;
   createdAt: string;
   description: string;

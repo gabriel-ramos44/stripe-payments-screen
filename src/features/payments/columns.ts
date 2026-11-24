@@ -1,11 +1,10 @@
 export const PAYMENT_COLUMNS = [
-  { id: "amount", label: "Amount", width: 205, min: 190, sort: "amountMinor" },
-  { id: "method", label: "Payment method", width: 130, min: 120 },
-  { id: "description", label: "Description", width: 155, min: 150 },
-  { id: "customer", label: "Customer", width: 240, min: 180 },
-  { id: "created", label: "Date", width: 125, min: 125, sort: "createdAt" },
-  { id: "refunded", label: "Refunded date", width: 105, min: 100 },
-  { id: "decline", label: "Decline reason", width: 150, min: 120 },
+  { id: "amount", label: "Amount", width: 140, min: 115, sort: "amountMinor" },
+  { id: "status", label: "Status", width: 115, min: 100, sort: "status" },
+  { id: "method", label: "Payment method", width: 180, min: 150 },
+  { id: "description", label: "Description", width: 170, min: 150 },
+  { id: "customer", label: "Customer", width: 215, min: 180 },
+  { id: "created", label: "Created", width: 170, min: 155, sort: "createdAt" },
   { id: "id", label: "Payment ID", width: 180, min: 160 },
 ] as const;
 export type ColumnId = (typeof PAYMENT_COLUMNS)[number]["id"];

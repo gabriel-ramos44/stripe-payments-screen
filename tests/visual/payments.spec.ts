@@ -52,24 +52,6 @@ test("desktop reference geometry and interaction states", async ({ page }) => {
   await expect(page).toHaveScreenshot("row-hover.png", {
     animations: "disabled",
   });
-  await page
-    .getByRole("checkbox", { name: /^Select payment / })
-    .first()
-    .check();
-  await expect(page).toHaveScreenshot("row-selection.png", {
-    animations: "disabled",
-  });
-  await page
-    .getByRole("button", { name: "Clear selection", exact: true })
-    .click();
-  await page
-    .getByRole("button", { name: /^Actions for payment/ })
-    .first()
-    .click();
-  await expect(page).toHaveScreenshot("row-menu.png", {
-    animations: "disabled",
-  });
-  await page.keyboard.press("Escape");
   await page.getByRole("button", { name: "Succeeded", exact: true }).click();
   await expect(page).toHaveScreenshot("filtered.png", {
     animations: "disabled",

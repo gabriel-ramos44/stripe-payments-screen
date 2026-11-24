@@ -4,7 +4,6 @@ import { ArrowDown, ArrowUp, ArrowUpDown, GripVertical } from "lucide-react";
 import { columnDefinition, type ColumnId } from "../columns";
 import type { PaymentSort, SortKey } from "../query";
 import styles from "./payments.module.css";
-import { Button, Menu, MenuItem } from "@/components/ui/primitives";
 
 export function ColumnHeader({
   id,
@@ -18,7 +17,7 @@ export function ColumnHeader({
   id: ColumnId;
   order: ColumnId[];
   sort: PaymentSort;
-  onSort: (key: SortKey, direction?: PaymentSort["direction"]) => void;
+  onSort: (key: SortKey) => void;
   onMove: (source: ColumnId, target: ColumnId) => void;
   onResize: (id: ColumnId, width: number) => void;
   width: number;
@@ -26,7 +25,6 @@ export function ColumnHeader({
   const column = columnDefinition(id);
   const sortKey = "sort" in column ? column.sort : null;
   const active = sortKey === sort.key;
-  const sortedGroup = active || (id === "amount" && sort.key === "status");
   const Icon = active
     ? sort.direction === "asc"
       ? ArrowUp
@@ -39,7 +37,7 @@ export function ColumnHeader({
       data-column={id}
       aria-sort={
         sortKey
-          ? sortedGroup
+          ? active
             ? sort.direction === "asc"
               ? "ascending"
               : "descending"
@@ -61,35 +59,13 @@ export function ColumnHeader({
           <button
             className={styles.sortButton}
             onClick={() => onSort(sortKey)}
-            aria-label={`Sort by ${id === "created" ? "created" : column.label.toLowerCase()} ${active && sort.direction === "asc" ? "descending" : "ascending"}`}
+            aria-label={`Sort by ${column.label.toLowerCase()} ${active && sort.direction === "asc" ? "descending" : "ascending"}`}
           >
             {column.label}
             <Icon size={12} aria-hidden="true" />
           </button>
         ) : (
           column.label
-        )}
-        {id === "amount" && (
-          <Menu
-            label="Status sorting"
-            trigger={
-              <Button
-                variant="ghost"
-                iconOnly
-                className={styles.statusSort}
-                aria-label="Sort by status"
-              >
-                <ArrowUpDown size={11} aria-hidden="true" />
-              </Button>
-            }
-          >
-            <MenuItem onSelect={() => onSort("status", "asc")}>
-              Sort by status ascending
-            </MenuItem>
-            <MenuItem onSelect={() => onSort("status", "desc")}>
-              Sort by status descending
-            </MenuItem>
-          </Menu>
         )}
         <button
           className={styles.dragHandle}

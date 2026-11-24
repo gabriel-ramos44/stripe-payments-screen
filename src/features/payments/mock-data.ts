@@ -160,14 +160,6 @@ export function createMockPayments({
       amountMinor,
       currency,
       status,
-      disputed:
-        status === "succeeded" && method.type !== "ach" && index % 23 === 0,
-      captureState:
-        status === "pending" && method.type === "card" && index % 2 === 0
-          ? "uncaptured"
-          : status === "pending" || status === "failed"
-            ? "not_applicable"
-            : "captured",
       method,
       createdAt: new Date(createdMs).toISOString(),
       description:
