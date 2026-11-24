@@ -5,7 +5,6 @@ import Link from "next/link";
 import * as Dialog from "@radix-ui/react-dialog";
 import {
   Activity,
-  ChartPie,
   Check,
   ExternalLink,
   Layers,
@@ -20,6 +19,7 @@ import {
   Box,
   ChartNoAxesCombined,
   ChevronDown,
+  Clock3,
   CircleHelp,
   Code2,
   CreditCard,
@@ -58,7 +58,7 @@ const mainNavigation: NavigationItem[] = [
   { label: "Product catalog", icon: Box },
 ];
 const shortcuts: NavigationItem[] = [
-  { label: "Payments analytics", icon: ChartPie },
+  { label: "Payments analytics", icon: Clock3 },
   { label: "Reports", icon: ChartNoAxesCombined },
   { label: "Sigma", icon: Activity },
   { label: "Radar", icon: ShieldCheck },
@@ -100,7 +100,7 @@ function NavigationGroup({
             onClick={onNavigate}
             className={`${styles.navItem} ${styles.navActive}`}
           >
-            <Icon size={15} aria-hidden="true" />
+            <Icon size={16} aria-hidden="true" />
             <span>{label}</span>
           </Link>
         ) : (
@@ -109,9 +109,9 @@ function NavigationGroup({
             content="Outside the scope of this payments assessment"
           >
             <button disabled className={styles.navItem}>
-              <Icon size={15} aria-hidden="true" />
+              <Icon size={16} aria-hidden="true" />
               <span>{label}</span>
-              {expandable && <ChevronDown size={12} aria-hidden="true" />}
+              {expandable && <ChevronDown size={8} aria-hidden="true" />}
             </button>
           </Tooltip>
         ),

@@ -64,8 +64,14 @@
 .navItem:disabled {
   cursor: default;
 }
+.navItem > svg:first-child {
+  width: 16px;
+  height: 16px;
+}
 .navItem > svg:last-child:not(:first-child) {
   margin-left: auto;
+  width: 8px;
+  height: 8px;
 }
 .navItem:hover {
   background: var(--surface);
