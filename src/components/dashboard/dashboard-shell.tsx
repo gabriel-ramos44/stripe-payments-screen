@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState, type ReactNode } from "react";
+import Link from "next/link";
 import * as Dialog from "@radix-ui/react-dialog";
 import {
   Activity,
@@ -86,7 +87,7 @@ function NavigationGroup({
       {title && <p className={styles.navLabel}>{title}</p>}
       {items.map(({ label, icon: Icon, expandable }) =>
         label === "Transactions" ? (
-          <a
+          <Link
             key={label}
             href="/payments"
             aria-current="page"
@@ -95,7 +96,7 @@ function NavigationGroup({
           >
             <Icon size={15} aria-hidden="true" />
             <span>{label}</span>
-          </a>
+          </Link>
         ) : (
           <Tooltip
             key={label}
@@ -249,14 +250,14 @@ export function DashboardShell({
             <nav className={styles.tabs} aria-label="Transaction types">
               {tabs.map((tab) =>
                 tab === "Payments" ? (
-                  <a
+                  <Link
                     key={tab}
                     href="/payments"
                     aria-current="page"
                     className={styles.activeTab}
                   >
                     {tab}
-                  </a>
+                  </Link>
                 ) : (
                   <button
                     key={tab}

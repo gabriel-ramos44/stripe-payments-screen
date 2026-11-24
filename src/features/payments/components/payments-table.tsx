@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import Link from "next/link";
 import {
   ArrowDown,
   ArrowUp,
@@ -22,11 +23,13 @@ export function PaymentsTable({
   referenceTime,
   sort,
   onSort,
+  returnTo = "/payments",
 }: {
   payments: readonly Payment[];
   referenceTime: string;
   sort: PaymentSort;
   onSort: (key: SortKey) => void;
+  returnTo?: string;
 }) {
   const [copiedId, setCopiedId] = useState<string | null>(null);
   const [notice, setNotice] = useState("");
@@ -130,13 +133,14 @@ export function PaymentsTable({
                 </td>
                 <td>
                   <div className={styles.paymentId}>
-                    <span
+                    <Link
+                      href={`/payments/${encodeURIComponent(payment.id)}?at=${encodeURIComponent(referenceTime)}&returnTo=${encodeURIComponent(returnTo)}`}
                       title={payment.id}
-                      aria-label={payment.id}
+                      aria-label={`View payment ${payment.id}`}
                       className={styles.idText}
                     >
                       {payment.id.slice(0, 12)}…{payment.id.slice(-4)}
-                    </span>
+                    </Link>
                     <Button
                       variant="ghost"
                       iconOnly
