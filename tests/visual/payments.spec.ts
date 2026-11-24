@@ -22,6 +22,19 @@ test.beforeEach(async ({ page }) => {
   await expect(page.locator("tbody tr")).toHaveCount(25);
 });
 
+test("More disclosure and sidebar hover and focus", async ({ page }) => {
+  const more = page.getByRole("button", { name: "More", exact: true });
+  await more.focus();
+  await page.keyboard.press("Enter");
+  await expect(page.getByRole("list", { name: "More products" })).toBeVisible();
+  await expect(page).toHaveScreenshot("more-navigation.png", { animations: "disabled" });
+  const transactions = page.getByRole("navigation", { name: "Main", exact: true }).getByRole("link", { name: "Transactions", exact: true });
+  await transactions.focus();
+  await transactions.hover();
+  await expect(transactions).toHaveCSS("cursor", "pointer");
+  await expect(page).toHaveScreenshot("sidebar-hover-focus.png", { animations: "disabled" });
+});
+
 test("desktop reference geometry and interaction states", async ({ page }) => {
   const geometry = await page.evaluate(() => {
     const rect = (selector: string) => {

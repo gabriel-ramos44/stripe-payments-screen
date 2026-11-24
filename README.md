@@ -30,7 +30,7 @@ No environment variables or external fonts are required.
 - Six reference summary views, including disputed and uncaptured synthetic payments.
 - Stable date/amount/status sorting and 25/50/100-row pagination, including empty
   states, page resets and disabled boundary navigation.
-- Responsive sidebar/top bar and a mobile drawer with focus trapping and restoration.
+- Responsive sidebar/top bar, expandable More navigation, and a mobile drawer with focus trapping and restoration.
 - Payment details with timeline, metadata, direct navigation and unknown-ID handling.
 - Shareable filter/sort/page state, including refresh and browser back/forward.
 - Column resizing and drag reordering, with keyboard, slider and button alternatives.
