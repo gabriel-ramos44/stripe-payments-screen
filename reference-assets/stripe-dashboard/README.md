@@ -1,6 +1,6 @@
 # Stripe dashboard SVG reference assets
 
-Captured from the authenticated Stripe test dashboard on 2026-11-24. Files preserve the original inline markup; generated Stripe CSS classes are not portable. The preview shows the original files without their surrounding dashboard styles. No account records or credentials are included.
+Captured from the authenticated Stripe test dashboard on 2026-11-24. Files preserve the original inline markup; generated Stripe CSS classes are not portable. Only SVG sources used by the UI are retained. No account records or credentials are included.
 
 `src/components/ui/stripe-icons.tsx` uses matching geometry as typed React components. It removes dashboard classes and test attributes, converts SVG attributes to React names, and uses `currentColor`. Icons are decorative; surrounding controls retain their accessible names. No runtime network request or raw HTML injection is needed.
 
@@ -24,5 +24,6 @@ Captured from the authenticated Stripe test dashboard on 2026-11-24. Files prese
 - `X`: `icon-054.svg`
 - `Code2`: `icon-063.svg`
 - `Clock3`: `icon-033.svg`
+- `Pin`: `icon-032.svg`
 
 Unmatched icons remain from Lucide. The dashboard did not supply a matching Cramly logo or payment brand marks; these were not substituted. These are Stripe-origin assets, not assets covered by the Lucide license.

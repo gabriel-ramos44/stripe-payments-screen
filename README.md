@@ -79,6 +79,8 @@ controls; extracted Stripe SVGs cover matching dashboard icons and Lucide suppli
 
 ## Decisions and limits
 
+Icon fidelity: some icons are approximations rather than pixel-perfect matches. No Figma or original design assets were provided, and our accessible Stripe panel does not show every icon in the reference. Extracted SVGs are used wherever a matching source is available.
+
 - Written requirements take priority over conflicting reference details: four
   required statuses, full payment IDs and 25/50/100 page sizes. The creation timestamp
   uses the reference label Date. Customer absorbs extra desktop width while other

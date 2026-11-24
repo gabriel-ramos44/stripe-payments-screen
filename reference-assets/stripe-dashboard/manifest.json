@@ -3,131 +3,6 @@
   "capturedAt": "2026-11-24T18:05:07.297Z",
   "assets": [
     {
-      "file": "icon-001.svg",
-      "sourceId": "7d5dad09e3780973",
-      "name": "svg-1"
-    },
-    {
-      "file": "icon-002.svg",
-      "sourceId": "cdb4ce0cd2fc1ed4",
-      "name": "svg-2"
-    },
-    {
-      "file": "icon-003.svg",
-      "sourceId": "b370a1cb2d03e1d3",
-      "name": "svg-3"
-    },
-    {
-      "file": "icon-004.svg",
-      "sourceId": "0656aa38ee8f71a3",
-      "name": "Remove section"
-    },
-    {
-      "file": "icon-005.svg",
-      "sourceId": "fc72d960371bc584",
-      "name": "svg-5"
-    },
-    {
-      "file": "icon-006.svg",
-      "sourceId": "842078159565d6ce",
-      "name": "svg-6"
-    },
-    {
-      "file": "icon-007.svg",
-      "sourceId": "41d8698849b0897a",
-      "name": "svg-7"
-    },
-    {
-      "file": "icon-008.svg",
-      "sourceId": "d397d150ce37117c",
-      "name": "svg-8"
-    },
-    {
-      "file": "icon-009.svg",
-      "sourceId": "f9e08f721d1e7e51",
-      "name": "svg-9"
-    },
-    {
-      "file": "icon-010.svg",
-      "sourceId": "e9b32661fec942a1",
-      "name": "svg-10"
-    },
-    {
-      "file": "icon-011.svg",
-      "sourceId": "b14d6baff1bad95f",
-      "name": "svg-11"
-    },
-    {
-      "file": "icon-012.svg",
-      "sourceId": "dddd2222dda031d7",
-      "name": "svg-12"
-    },
-    {
-      "file": "icon-013.svg",
-      "sourceId": "1a76ed93d31dd0a3",
-      "name": "svg-13"
-    },
-    {
-      "file": "icon-014.svg",
-      "sourceId": "9e377c5164218028",
-      "name": "Hidden"
-    },
-    {
-      "file": "icon-015.svg",
-      "sourceId": "3903ec5ac9c76d88",
-      "name": "svg-15"
-    },
-    {
-      "file": "icon-016.svg",
-      "sourceId": "e22e027d16167dfc",
-      "name": "svg-16"
-    },
-    {
-      "file": "icon-017.svg",
-      "sourceId": "06ab20812e4957ed",
-      "name": "svg-17"
-    },
-    {
-      "file": "icon-018.svg",
-      "sourceId": "41fba2405f163ad8",
-      "name": "svg-18"
-    },
-    {
-      "file": "icon-019.svg",
-      "sourceId": "83c29613837e0b88",
-      "name": "svg-19"
-    },
-    {
-      "file": "icon-020.svg",
-      "sourceId": "742d64de16ee9eed",
-      "name": "svg-20"
-    },
-    {
-      "file": "icon-021.svg",
-      "sourceId": "bdb05c451f383b14",
-      "name": "svg-21"
-    },
-    {
-      "file": "icon-022.svg",
-      "sourceId": "18893a1067c505ff",
-      "name": "svg-22"
-    },
-    {
-      "file": "icon-023.svg",
-      "sourceId": "a6af4f160afde7d2",
-      "name": "svg-23"
-    },
-    {
-      "file": "icon-024.svg",
-      "sourceId": "a4cb20b0c603a1c7",
-      "name": "svg-24"
-    },
-    {
-      "file": "icon-025.svg",
-      "sourceId": "122fbef14bfe3306",
-      "name": "svg-25"
-    },
-    {
       "file": "icon-026.svg",
       "sourceId": "e33156efb0827303",
       "name": "svg-26"
@@ -153,11 +28,6 @@
       "name": "svg-30"
     },
     {
-      "file": "icon-031.svg",
-      "sourceId": "7d2c7f79dcb53685",
-      "name": "svg-31"
-    },
-    {
       "file": "icon-032.svg",
       "sourceId": "797a4c7775458c4f",
       "name": "svg-32"
@@ -168,34 +38,9 @@
       "name": "svg-33"
     },
     {
-      "file": "icon-034.svg",
-      "sourceId": "c9ff0bb6c6558d7d",
-      "name": "svg-34"
-    },
-    {
-      "file": "icon-035.svg",
-      "sourceId": "63ccf6c09a628a88",
-      "name": "svg-35"
-    },
-    {
-      "file": "icon-036.svg",
-      "sourceId": "cf4a19347d29a48c",
-      "name": "svg-36"
-    },
-    {
-      "file": "icon-037.svg",
-      "sourceId": "927b595f5830574e",
-      "name": "svg-37"
-    },
-    {
       "file": "icon-038.svg",
       "sourceId": "3bb235f2e808a0f5",
       "name": "svg-38"
-    },
-    {
-      "file": "icon-039.svg",
-      "sourceId": "6faac90458729cb0",
-      "name": "svg-39"
     },
     {
       "file": "icon-040.svg",
@@ -203,39 +48,14 @@
       "name": "svg-40"
     },
     {
-      "file": "icon-041.svg",
-      "sourceId": "49b8381d18b7cd80",
-      "name": "svg-41"
-    },
-    {
       "file": "icon-042.svg",
       "sourceId": "581fc911d89b933d",
       "name": "svg-42"
     },
     {
-      "file": "icon-043.svg",
-      "sourceId": "535228d2b05fe775",
-      "name": "svg-43"
-    },
-    {
-      "file": "icon-044.svg",
-      "sourceId": "38e9bb77041dc06e",
-      "name": "svg-44"
-    },
-    {
-      "file": "icon-045.svg",
-      "sourceId": "52f1cb66f6c9cc7b",
-      "name": "svg-45"
-    },
-    {
       "file": "icon-046.svg",
       "sourceId": "226752b86b8106df",
       "name": "svg-46"
-    },
-    {
-      "file": "icon-047.svg",
-      "sourceId": "1c91da07c115d080",
-      "name": "svg-47"
     },
     {
       "file": "icon-048.svg",
@@ -263,11 +83,6 @@
       "name": "svg-52"
     },
     {
-      "file": "icon-053.svg",
-      "sourceId": "bbbbcca2dcb1f8e0",
-      "name": "svg-53"
-    },
-    {
       "file": "icon-054.svg",
       "sourceId": "ad0d59c7f2d3d32a",
       "name": "svg-54"
@@ -278,69 +93,9 @@
       "name": "svg-55"
     },
     {
-      "file": "icon-056.svg",
-      "sourceId": "de19afe4dcb50a5c",
-      "name": "svg-56"
-    },
-    {
-      "file": "icon-057.svg",
-      "sourceId": "579a0d460575c286",
-      "name": "svg-57"
-    },
-    {
-      "file": "icon-058.svg",
-      "sourceId": "ed60010e76780975",
-      "name": "svg-58"
-    },
-    {
-      "file": "icon-059.svg",
-      "sourceId": "eab33aa5a3e96e3c",
-      "name": "Task blocked icon"
-    },
-    {
-      "file": "icon-060.svg",
-      "sourceId": "a658eed404512a5a",
-      "name": "svg-60"
-    },
-    {
-      "file": "icon-061.svg",
-      "sourceId": "7e38bf7a3d5250db",
-      "name": "Task blocked icon"
-    },
-    {
-      "file": "icon-062.svg",
-      "sourceId": "ad71433a86150e0c",
-      "name": "Task blocked icon"
-    },
-    {
       "file": "icon-063.svg",
       "sourceId": "bc347806822823b4",
       "name": "svg-63"
-    },
-    {
-      "file": "icon-064.svg",
-      "sourceId": "618531c607c4db0d",
-      "name": "svg-64"
-    },
-    {
-      "file": "icon-065.svg",
-      "sourceId": "fbc5d5e1268d9116",
-      "name": "svg-65"
-    },
-    {
-      "file": "icon-066.svg",
-      "sourceId": "6ee9a7741c86e333",
-      "name": "svg-66"
-    },
-    {
-      "file": "icon-067.svg",
-      "sourceId": "0c75ac88bf4664d1",
-      "name": "svg-67"
-    },
-    {
-      "file": "icon-068.svg",
-      "sourceId": "6b4e1771c5e1e8b4",
-      "name": "svg-68"
     }
   ]
 }
