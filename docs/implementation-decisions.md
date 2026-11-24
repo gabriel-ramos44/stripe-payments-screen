@@ -1,19 +1,18 @@
 # Implementation decisions
 
-Status: planning baseline for later tasks. Only the project foundation is built.
+Status: implemented baseline plus optional assessment features. Publication remains deferred.
 
 ## Scope and stack
 
 - Next.js App Router and strict TypeScript, as preferred in the brief.
-- Plain global CSS for reset/base rules; CSS Modules planned for component styles.
-- Keep shell rendering simple; put interactive state in client components when built.
+- Plain global CSS for reset/base rules; CSS Modules for component styles.
+- Shell interactions and table state use client components; dataset and details routes use server components.
 - Use local mock data and browser-side processing; no backend, auth or Stripe API.
-- Evaluate a headless table library in the table task; do not install unused tools now.
+- Native table semantics and focused column helpers cover the current scope without a table library.
 - Keep feature types, query functions, formatters and UI separate. Avoid a global
   state library for this single-screen scope.
-- Root route currently contains only a setup placeholder. Planned payments route:
-  `/payments`, with `/payments/[paymentId]` if the optional detail task is approved.
-- No remote fonts, analytics, cloud pages, deployment or Git remote in current scope.
+- Root redirects to `/payments`; `/payments/[paymentId]` provides timeline and metadata.
+- No remote fonts, analytics, cloud pages or deployment are configured by this work.
 
 ## Reference conflicts
 
@@ -93,3 +92,13 @@ that Chargeblast has approved these interpretations.
 - Whether a walkthrough video exists outside the supplied PDF.
 
 None of these blocks local foundation work. Submission/publication remains deferred.
+
+## Implemented optional behavior
+
+The details page carries the list's anchor timestamp and a constrained `/payments`
+return URL. Filter/sort/page URLs are parsed against allowlists and valid bounds;
+invalid values fall back to defaults. Column order/widths live in client state and
+reset on refresh. Resizing is constrained to per-column minima and a 600px maximum.
+Header drag/pointer controls have keyboard and popover alternatives. CSV export
+uses all filtered/sorted rows and current column order, with canonical timestamps
+and spreadsheet-formula protection. See the QA report for current verification.

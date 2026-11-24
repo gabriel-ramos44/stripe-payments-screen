@@ -1,10 +1,10 @@
-# Stripe payments screen assessment
+# Stripe payments screen
 
-Local-only Next.js and TypeScript project for the Chargeblast front-end assessment.
-Tasks 1–13 are complete: planning, project setup, reusable UI primitives, responsive
-dashboard shell, typed data, payments table, search/filters, sorting/pagination and
-accessibility refinements, production QA and visual regression coverage. Optional export, column customization, payment details
-and unrelated dashboard destinations remain outside this implementation.
+A Stripe-inspired payments dashboard built for the Chargeblast front-end assessment
+with Next.js, strict TypeScript, React, CSS Modules and accessible Radix primitives.
+The application uses 500 seeded synthetic payments; no Stripe account or backend is required.
+
+![Payments dashboard](tests/visual/payments.spec.ts-snapshots/desktop-win32.png)
 
 ## Run locally
 
@@ -15,117 +15,97 @@ npm ci
 npm run dev
 ```
 
-Open http://127.0.0.1:3000 (redirects to `/payments`). The development and production servers bind to loopback.
-No environment variables, backend, external fonts, or Stripe account are needed.
+Open http://127.0.0.1:3000/payments. Servers bind to loopback by default.
+For a production preview, run `npm run build` followed by `npm start`.
+No environment variables or external fonts are required.
+
+## Features
+
+- Required payment fields, currency-aware amounts, four status badges, full-ID copy
+  with error recovery, and hover/focus relative-time tooltips in Brasilia time.
+- Search by payment ID, email or last four digits; combine calendar date ranges,
+  multi-select statuses/methods, amount bounds and currency filters.
+- Stable date/amount/status sorting and 25/50/100-row pagination, including empty
+  states, page resets and disabled boundary navigation.
+- Responsive sidebar/top bar and a mobile drawer with focus trapping and restoration.
+- Payment details with timeline, metadata, direct navigation and unknown-ID handling.
+- Shareable filter/sort/page state, including refresh and browser back/forward.
+- Column resizing and drag reordering, with keyboard, slider and button alternatives.
+- CSV export of all filtered/sorted rows across pages in the selected column order.
 
 ## Verify
 
 ```sh
-npm run lint
-npm run typecheck
-npm run verify:data
-npm run verify:query
-npm run build
-```
-
-`npm run check` runs all five sequentially. Browser checks use installed Google Chrome:
-
-```sh
+npm run check
 npm run test:e2e
 ```
 
-Playwright builds the app, then starts its own production server on port 3200 and
-uses one worker. Keep that port free. Its server and browser use a fixed QA clock;
-normal local use still uses current dates. Optional server-only
-`PAYMENTS_MOCK_ANCHOR` accepts a valid timestamp for reproducible local inspection.
-Axe checks the default screen, open status filter, mobile screen and mobile drawer.
-Failure traces and reports are ignored by Git. This is targeted verification;
-automated accessibility checks do not replace manual keyboard/screen-reader review.
+`check` runs ESLint, strict types, seeded-data checks, query/state/URL/CSV checks and
+an optimized production build. Playwright builds the app and starts its own local
+production server on port 3200. Keep that port free; installed Google Chrome is required.
+The browser suite includes functional journeys, automated accessibility scans and
+reviewed screenshots. Open the local report with `npx playwright show-report`.
 
-For a local production preview, run `npm run build` followed by `npm start`.
+Screenshots use Windows/Chrome baselines at fixed viewport sizes and a fixed clock.
+To deliberately regenerate baselines after a reviewed visual change:
 
-## Planning documents
+```sh
+npm run test:e2e -- --update-snapshots
+```
 
-- [Requirements and acceptance checklist](docs/requirements.md)
-- [Screenshot measurements and visual inventory](docs/reference-analysis.md)
-- [Implementation decisions and assumptions](docs/implementation-decisions.md)
-- [Functional and visual QA report](docs/qa-report.md)
+Inspect changed images before accepting them, then run the suite again without
+updates. Other operating systems/browser versions can render fonts differently.
+Reports, downloads and failure traces are ignored by Git and are never uploaded.
 
-## Structure
+## Architecture
 
-- `src/app/`: App Router entry point, metadata and minimal global styles.
-- `src/components/ui/`: styled Radix menus, popovers and tooltips; buttons, inputs
-  and status badges; Lucide icons.
-- `src/components/dashboard/`: responsive sidebar, account menu, top bar and
-  Payments screen shell. The announcement can be dismissed; utility popovers work.
-- `src/features/payments/`: domain types, seeded data, formatters, pure query functions,
-  reducer, filters, table and pagination components.
-- `scripts/`: data integrity, query boundary and state-transition verification.
-- `tests/e2e/`: reproducible browser journeys and automated accessibility checks.
-- `docs/`: local assessment planning documents.
-- `package-lock.json`: reproducible dependency resolutions; use `npm ci`.
+- `src/app/payments/`: server-rendered list and dynamic details route.
+- `src/features/payments/data.ts`: one server-side dataset/timestamp boundary.
+- `types.ts`, `mock-data.ts`: discriminated methods, integer minor-unit amounts and
+  deterministic, realistic synthetic data with reserved example.com email addresses.
+- `query.ts`, `state.ts`, `url-state.ts`: pure filtering, sorting, pagination,
+  state transitions and validated URL serialization.
+- `columns.ts`, `csv.ts`: column constraints and escaped CSV serialization.
+- `src/features/payments/components/`: focused table, filter, pagination and column controls.
+- `src/components/`: dashboard shell and shared Radix-based UI components.
+- `scripts/`, `tests/`: data/query verification, browser journeys and visual baselines.
 
-CSS Modules and plain CSS style the dashboard and shared design tokens. Radix
-primitives provide focus/keyboard behavior for menus, popovers and tooltips; Lucide
-provides icons. Native table semantics and a small typed reducer cover the current
-requirements without another table/state dependency. Filtering, sorting and pagination
-are pure functions tested separately from the UI.
+A native semantic table and a small typed reducer cover this dataset without a
+large table/state dependency. Radix provides keyboard/focus behavior for layered
+controls; Lucide supplies general UI icons. CSS controls visual fidelity.
 
-## Mock data
+## Decisions and limits
 
-`createMockPayments({ anchor: new Date(), count: 500, seed: 20261123 })` creates
-realistic synthetic payments. Call it once at the data boundary and pass the same
-records to the client; do not generate independently during server/client rendering.
-The function never reads the clock itself. Use a fixed anchor in tests.
+- Written requirements take priority over conflicting reference details: four
+  required statuses, required Payment ID/Created columns and 25/50/100 page sizes.
+- Cross-currency amount sorting/filtering compares numeric major units without FX
+  conversion. A currency filter lets reviewers compare one currency at a time.
+- Calendar presets include today in America/Sao_Paulo; custom endpoints are inclusive.
+  Relative tooltips refresh on opening. CSV timestamps use explicitly labeled UTC.
+- Each view keeps one dataset anchor; shareable URLs carry it so reload/details
+  preserve dates. `PAYMENTS_MOCK_ANCHOR` can fix the server clock for local QA.
+- URL values are validated and unknown values ignored. Column layouts are in-memory
+  and reset on reload; filter/sort/pagination state is shareable.
+- CSV includes full IDs and follows the displayed column order. All values are
+  quoted, quotes/newlines are escaped and formula-like text is neutralized.
+- Unrelated navigation, payment creation and analytics actions are outside the demo.
+- Original font and undocumented Stripe interactions could not be verified against
+  a live dashboard. Exact pixel equality and full WCAG compliance are not claimed.
+- Automated checks run in Chrome; Firefox/Safari and a manual screen-reader audit
+  have not been completed. Clipboard failure/success branches use controlled tests.
 
-Records cover USD, GBP, EUR, BRL and JPY; amounts are integer minor units. Customer
-emails use reserved `example.com` addresses, and IDs carry a `mock` prefix. Card,
-ACH and wallet methods are discriminated types. Dates span 120 days with recent
-records; refunded and failed records have matching metadata. The dynamic server
-page captures one anchor and serializes one dataset to the client. Data remains
-stable while searching, sorting and paging; refreshing generates dates relative
-to the new anchor.
+ESLint 9 is pinned because the current Next.js preset's React/import/accessibility
+plugins declare compatibility through that major. npm marks it unsupported upstream;
+upgrade once all preset plugins support ESLint 10.
 
-## Behavior and deliberate reference differences
+## Review materials
 
-- Search full payment IDs, customer emails or last four digits, case-insensitively.
-- Combine categories with AND; multiple selections within a category use OR.
-- Date presets include today and use Bras�lia calendar boundaries; custom dates
-  include both endpoints. Invalid ranges do not replace applied filters.
-- Amount bounds are inclusive numeric major units without FX normalization. Use
-  the Currency filter to compare one currency; JPY has no fractional minor units.
-- Date, amount and status sorting support both directions. Status order is
-  Succeeded, Pending, Failed, Refunded; ID breaks ties consistently.
-- Page sizes 25/50/100; filter, sort and size changes reset to page one. Empty and
-  last-page states show correct counts and disabled navigation.
-- Full-ID copy has visible and screen-reader feedback, including clipboard errors.
-  Created dates have keyboard-accessible relative-time tooltips in Bras�lia time.
-- Required Payment ID/Created columns and the four required statuses take priority
-  over conflicting screenshot content. The default page size is 25, not 20.
-- Table overflow stays inside a keyboard-focusable region. Mobile navigation uses
-  a Radix dialog with focus trapping, Escape dismissal and focus restoration.
-- Filters/sort/page state are in memory; shareable URLs are a future optional task.
+- [Requirements checklist](docs/requirements.md)
+- [Reference analysis](docs/reference-analysis.md)
+- [Implementation decisions](docs/implementation-decisions.md)
+- [Functional and visual QA](docs/qa-report.md)
+- [Delivery checklist and submission draft](docs/delivery-checklist.md)
 
-## Verification performed
-
-Lint, strict typecheck, deterministic-data verification, query/state boundary checks
-and production build. Playwright covers search/empty reset, combined multi-select
-filters, invalid ranges, date presets/custom dates, sorting, all page sizes,
-clipboard success/failure, focusable tooltips and mobile navigation. Screenshots
-at 1365, 768, 390 and 320px were checked for contained overflow and page errors.
-The normalized PDF comparison and visual refinements are documented in the QA report.
-Eleven reviewed screenshot baselines cover default/hover/filtered/empty/popover/
-focus/mobile states. `npm run test:e2e` verifies them without changing baselines;
-`npm run test:e2e -- --update-snapshots` regenerates them only for deliberate,
-manually reviewed UI changes. Baselines use Windows and installed Chrome. Open
-the local test report with `npx playwright show-report`; reports are never uploaded.
-
-ESLint is pinned to 9.39.5 because the React, import and accessibility plugins in
-the current Next.js preset declare compatibility through ESLint 9. npm marks this
-major as unsupported upstream; upgrade when the preset's plugin peers support 10.
-
-## Local scope
-
-No deployment, ChatGPT Page, analytics or cloud integration is configured. This
-implementation work creates local commits only and does not push to GitHub. No real customer data or payment credentials are used. Git commits use
-the user's configured identity without co-author trailers.
+The project is prepared locally. Hosting, repository publication/access verification
+and submission remain separate steps. Original assessment screenshots and real
+customer data are not included in the committed visual baselines.

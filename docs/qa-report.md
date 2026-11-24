@@ -75,7 +75,7 @@ hover/menu behavior and exact original viewport remain unverified without live
 Stripe access. No claim of exact pixel equality or guaranteed assessment approval
 is made.
 
-## Final verification result
+## Task 13 verification result
 
 - `npm run check`: lint, strict types, data/query verification and production build passed.
 - Production browser suite: 12 tests passed (9 functional/accessibility, 3 visual).
@@ -85,3 +85,36 @@ is made.
   relative tooltip wording deterministic. Time-advancement behavior is independently
   exercised by the functional suite.
 - Local preview refreshed on port 3001. No deployment, upload or Git push performed.
+
+## Task 14 optional features and local delivery preparation
+
+Implemented and reviewed locally:
+
+- A separate details route with customer/method information, timeline, metadata,
+  unknown-ID handling and the original dataset timestamp carried through navigation.
+- Validated URL state for filters, sorting and pagination. Browser back/forward,
+  refresh and return from details preserve the view. Search updates replace the
+  current history entry; discrete filter/sort/page actions create history entries.
+- Native column drag handles, pointer resizing and keyboard alternatives. Widths
+  are constrained, layouts reset explicitly and required columns cannot be hidden.
+  The settings popover scrolls within short/mobile viewports.
+- CSV export of the full filtered/sorted set across pages, in the selected column
+  order, with full IDs, labeled UTC timestamps, quoted fields, escaped quotes and
+  formula-prefix neutralization. The browser test inspects an actual downloaded file.
+- Reviewer README, delivery checklist and email draft prepared without publication.
+
+The extended suite contains 17 tests: 13 functional/accessibility journeys and four
+visual tests with 13 screenshot baselines. New coverage includes actual drag and
+pointer resize, keyboard/range resizing, history/reload, malformed URLs, details
+accessibility/mobile overflow and CSV row count/order. New screenshots cover details
+and the column settings popover. All synthetic baselines were visually reviewed.
+
+Column layouts intentionally reset on refresh and are not part of shareable URLs.
+Real Stripe interactions, non-Chrome browsers, hosting and remote repository access
+remain unverified. The delivery checklist records the remaining external steps.
+
+Final task-14 verification: `npm run check` passed, followed by all 17 production
+tests against unchanged screenshot baselines (13 functional/accessibility tests,
+four visual tests, 13 reviewed images). Pointer resizing and short-screen column
+panel scrolling passed as well. The refreshed port-3001 preview returned HTTP 200.
+All changes remain local; no push, deployment, collaborator change or email send occurred.

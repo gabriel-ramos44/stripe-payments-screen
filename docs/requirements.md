@@ -20,7 +20,9 @@ from our proposed engineering choices.
 - [x] Task 11: focus-trapped mobile navigation, keyboard-accessible controls, validation feedback and contained overflow.
 - [x] Task 12: dedicated production QA, expanded functional/boundary checks and fixes.
 - [x] Task 13: normalized reference comparison, visual refinements and screenshot regression baselines.
-- [ ] Tasks 14–15: optional features and delivery; no publication authorized.
+- [x] Task 14: details route, URL views, column resizing/reordering and CSV export.
+- [x] Task 15 (local preparation): reviewer README, delivery checklist and submission draft.
+- [ ] Task 15 (external delivery): deployment, repository access/push and submission remain unauthorized.
 
 ## Required table
 
