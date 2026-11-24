@@ -45,6 +45,7 @@ export function paginatePayments(
   };
 }
 export type PaymentFilters = {
+  view: "all" | "disputed" | "uncaptured";
   search: string;
   statuses: PaymentStatus[];
   methods: Payment["method"]["type"][];
@@ -57,6 +58,7 @@ export type PaymentFilters = {
 };
 export function emptyFilters(): PaymentFilters {
   return {
+    view: "all",
     search: "",
     statuses: [],
     methods: [],
@@ -129,6 +131,9 @@ export function filterPayments(
   const to = filters.datePreset === "custom" ? filters.endDate : today;
   const search = filters.search.trim().toLowerCase();
   return payments.filter((payment) => {
+    if (filters.view === "disputed" && !payment.disputed) return false;
+    if (filters.view === "uncaptured" && payment.captureState !== "uncaptured")
+      return false;
     if (
       search &&
       ![payment.id, payment.customer.email, payment.method.last4].some(
