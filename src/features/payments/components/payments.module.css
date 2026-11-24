@@ -1,5 +1,5 @@
 .tableScroll {
-  max-height: calc(100dvh - 352px);
+  max-height: calc(100dvh - 356px);
   max-width: 100%;
   width: 100%;
   overflow-x: auto;
@@ -8,10 +8,11 @@
   scrollbar-width: thin;
 }
 .table {
+  table-layout: fixed;
   width: 100%;
   border-collapse: collapse;
   white-space: nowrap;
-  font-size: 13px;
+  font-size: 12.5px;
   text-align: left;
 }
 .table th {
@@ -37,7 +38,7 @@
 }
 .table th[data-column="amount"],
 .amount {
-  text-align: right;
+  text-align: left;
 }
 .amount {
   font-variant-numeric: tabular-nums;
@@ -45,7 +46,7 @@
 }
 .currency {
   font-size: 11px;
-  margin-left: 8px;
+  margin-left: 0;
   color: var(--muted);
   font-weight: 400;
 }
@@ -53,9 +54,6 @@
 .email,
 .date {
   color: #596579;
-}
-.customerName {
-  display: none;
 }
 .paymentId {
   display: flex;
@@ -76,7 +74,7 @@
 .method {
   display: inline-flex;
   align-items: center;
-  gap: 5px;
+  gap: 4px;
   font-size: 12px;
   color: #4b5568;
 }
@@ -88,30 +86,118 @@
   height: 18px;
   flex-shrink: 0;
 }
-.brand {
-  display: inline-flex;
-  justify-content: center;
-  align-items: center;
-  width: 22px;
+.walletLogo {
+  display: inline-grid;
+  place-items: center;
+  width: 14px;
   height: 17px;
-  border: 1px solid #dde2e9;
   border-radius: 2px;
-  background: #f2f4f7;
-}
-.visa {
-  background: #2056a0;
+  background: #24242b;
   color: white;
-  border-color: #2056a0;
+  flex-shrink: 0;
 }
-.mastercard {
-  background: #26252b;
-  color: #ffb449;
-  border-color: #26252b;
+.amountGroup {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  font-weight: 400;
 }
-.amex {
-  background: #207499;
-  color: white;
-  border-color: #207499;
+.money {
+  flex: 0 0 54px;
+  text-align: right;
+  font-weight: 600;
+}
+.amountGroup > [data-payment-status] {
+  flex-shrink: 0;
+}
+.table .selectCell {
+  padding: 4px 6px;
+  text-align: center;
+}
+.selectCell input {
+  appearance: none;
+  border: 1px solid #d7dfe7;
+  border-radius: 4px;
+  background: white;
+  box-shadow: 0 1px 2px #1a1f3608;
+  width: 14px;
+  height: 14px;
+  margin: 0;
+  vertical-align: middle;
+  accent-color: var(--accent);
+  cursor: pointer;
+}
+.selectCell input:checked {
+  background: var(--accent)
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 14 14'%3E%3Cpath d='m3 7 2.5 2.5L11 4' fill='none' stroke='white' stroke-width='1.7'/%3E%3C/svg%3E")
+    center/12px no-repeat;
+  border-color: var(--accent);
+}
+.selectCell input:indeterminate {
+  background: var(--accent)
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 14 14'%3E%3Cpath d='M3 7h8' stroke='white' stroke-width='1.7'/%3E%3C/svg%3E")
+    center/12px no-repeat;
+  border-color: var(--accent);
+}
+.table .rowActions {
+  position: sticky;
+  right: 0;
+  padding: 2px 4px;
+  background: white;
+  z-index: 2;
+  box-shadow: -5px 0 8px #ffffffc0;
+}
+.table th.rowActions {
+  z-index: 4;
+}
+.rowActions button {
+  width: 24px;
+  min-height: 22px;
+  padding: 3px;
+  color: var(--muted);
+}
+.rowActions button svg {
+  width: 14px;
+  height: 14px;
+}
+.selectedRow td {
+  background: #f4f5f8;
+}
+.selectionBar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 5px 10px;
+  background: var(--accent-soft);
+  font-size: 12px;
+}
+.table td[data-column="created"],
+.table td[data-column="refunded"] {
+  font-size: 12px;
+}
+.sortButton svg {
+  opacity: 0;
+}
+.table th:hover .sortButton svg,
+.sortButton:focus-visible svg,
+th[aria-sort="ascending"] .sortButton svg,
+th[aria-sort="descending"] .sortButton svg {
+  opacity: 1;
+}
+.headerContent .statusSort {
+  min-height: 18px;
+  width: 14px;
+  padding: 0;
+  opacity: 0;
+  border: 0;
+}
+.table th:hover .statusSort,
+.headerContent .statusSort:focus-visible {
+  opacity: 1;
+}
+.statusSort svg {
+  width: 11px;
+  height: 11px;
 }
 .methodName {
   display: inline-flex;
@@ -120,17 +206,6 @@
   text-transform: capitalize;
   font-size: 10px;
   color: var(--muted);
-}
-.visaMark {
-  font-size: 7px;
-  font-weight: 800;
-  font-style: italic;
-  letter-spacing: -0.35px;
-}
-.amexMark {
-  font-size: 6px;
-  font-weight: 800;
-  letter-spacing: -0.4px;
 }
 .copyNotice {
   display: flex;
@@ -315,7 +390,7 @@
 }
 .summaries {
   display: grid;
-  grid-template-columns: repeat(5, minmax(0, 1fr));
+  grid-template-columns: repeat(6, minmax(0, 1fr));
   gap: 7px;
   margin-bottom: 14px;
 }

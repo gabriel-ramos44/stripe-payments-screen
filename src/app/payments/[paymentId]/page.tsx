@@ -162,6 +162,14 @@ export default async function PaymentDetailsPage({
               <dt>Currency</dt>
               <dd>{payment.currency}</dd>
             </div>
+            <div>
+              <dt>Dispute</dt>
+              <dd>{payment.disputed ? "Open" : "None"}</dd>
+            </div>
+            <div>
+              <dt>Capture status</dt>
+              <dd>{payment.captureState.replaceAll("_", " ")}</dd>
+            </div>
           </dl>
         </section>
       </section>

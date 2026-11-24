@@ -16,7 +16,7 @@ export type PaymentsAction =
   | { type: "restore"; state: PaymentsState }
   | { type: "filters"; filters: PaymentFilters }
   | { type: "reset" }
-  | { type: "sort"; key: SortKey }
+  | { type: "sort"; key: SortKey; direction?: "asc" | "desc" }
   | { type: "page"; page: number }
   | { type: "pageSize"; size: PageSize };
 export function initialPaymentsState(): PaymentsState {
@@ -45,9 +45,10 @@ export function paymentsReducer(
         sort: {
           key: action.key,
           direction:
-            state.sort.key === action.key && state.sort.direction === "asc"
+            action.direction ??
+            (state.sort.key === action.key && state.sort.direction === "asc"
               ? "desc"
-              : "asc",
+              : "asc"),
         },
       };
     case "page":

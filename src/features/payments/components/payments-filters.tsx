@@ -1,21 +1,9 @@
 "use client";
 
 import { useId, useState, type ReactNode } from "react";
-import {
-  CalendarDays,
-  CircleDollarSign,
-  CreditCard,
-  Download,
-  PlusCircle,
-  X,
-} from "lucide-react";
+import { Download, PlusCircle, SlidersHorizontal } from "lucide-react";
 import { Button, Input, Popover } from "@/components/ui/primitives";
-import {
-  CURRENCY_EXPONENTS,
-  PAYMENT_STATUSES,
-  type Currency,
-  type Payment,
-} from "../types";
+import { CURRENCY_EXPONENTS, PAYMENT_STATUSES, type Currency } from "../types";
 import {
   validateFilters,
   type DatePreset,
@@ -50,11 +38,24 @@ export function PaymentsFilters({
   return (
     <>
       <div className={styles.summaries} aria-label="Payment views">
-        {["all", ...PAYMENT_STATUSES].map((status) => {
+        {(
+          [
+            "all",
+            "succeeded",
+            "refunded",
+            "disputed",
+            "failed",
+            "uncaptured",
+          ] as const
+        ).map((status) => {
           const active =
-            status === "all"
-              ? !filters.statuses.length
-              : filters.statuses.length === 1 && filters.statuses[0] === status;
+            status === "disputed" || status === "uncaptured"
+              ? filters.view === status
+              : filters.view === "all" &&
+                (status === "all"
+                  ? !filters.statuses.length
+                  : filters.statuses.length === 1 &&
+                    filters.statuses[0] === status);
           return (
             <button
               key={status}
@@ -63,12 +64,26 @@ export function PaymentsFilters({
               onClick={() =>
                 onChange({
                   ...filters,
+                  view:
+                    status === "disputed" || status === "uncaptured"
+                      ? status
+                      : "all",
                   statuses:
-                    status === "all" ? [] : [status as Payment["status"]],
+                    status === "all" ||
+                    status === "disputed" ||
+                    status === "uncaptured"
+                      ? []
+                      : [status],
                 })
               }
             >
-              {status === "all" ? "All" : labels[status as Payment["status"]]}
+              {status === "all"
+                ? "All"
+                : status === "disputed"
+                  ? "Disputed"
+                  : status === "uncaptured"
+                    ? "Uncaptured"
+                    : labels[status]}
             </button>
           );
         })}
@@ -83,7 +98,7 @@ export function PaymentsFilters({
                   filters.datePreset !== "all" ? styles.activeFilter : ""
                 }
               >
-                <CalendarDays />
+                <PlusCircle />
                 Date and time{filters.datePreset !== "all" && " •"}
               </Button>
             }
@@ -100,7 +115,7 @@ export function PaymentsFilters({
                     : ""
                 }
               >
-                <CircleDollarSign />
+                <PlusCircle />
                 Amount{(filters.minAmount || filters.maxAmount) && " •"}
               </Button>
             }
@@ -155,7 +170,7 @@ export function PaymentsFilters({
               <Button
                 className={filters.methods.length ? styles.activeFilter : ""}
               >
-                <CreditCard />
+                <PlusCircle />
                 Payment method
                 {filters.methods.length ? ` (${filters.methods.length})` : ""}
               </Button>
@@ -169,10 +184,27 @@ export function PaymentsFilters({
               onChange={(methods) => onChange({ ...filters, methods })}
             />
           </Popover>
-          <Button variant="ghost" onClick={onReset}>
-            <X />
-            Reset
-          </Button>
+          <Popover
+            label="More filters"
+            trigger={
+              <Button>
+                <PlusCircle />
+                More filters
+              </Button>
+            }
+          >
+            <div className={styles.filterForm}>
+              <strong>Manage filters</strong>
+              <p className={styles.hint}>
+                Combine date, amount, currency, status and payment method
+                filters to refine this view.
+              </p>
+              <Button onClick={onReset}>
+                <SlidersHorizontal />
+                Reset
+              </Button>
+            </div>
+          </Popover>
         </div>
         <div className={styles.tableActions}>
           <Button

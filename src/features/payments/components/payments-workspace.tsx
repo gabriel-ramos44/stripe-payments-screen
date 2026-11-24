@@ -149,7 +149,9 @@ export function PaymentsWorkspace({
           payments={pagination.rows}
           referenceTime={referenceTime}
           sort={sort}
-          onSort={(key) => dispatch({ type: "sort", key })}
+          onSort={(key, direction) =>
+            dispatch({ type: "sort", key, ...(direction ? { direction } : {}) })
+          }
           returnTo={`/payments?${serializePaymentsUrl(state, referenceTime)}`}
           columnOrder={columnOrder}
           columnWidths={columnWidths}
