@@ -19,8 +19,8 @@ test("CSV exports every filtered row in current column order", async ({
   const csv = await readFile((await download.path())!, "utf8");
   const lines = csv.trim().split("\r\n");
   expect(lines).toHaveLength(279);
-  expect(lines[0]).toContain('"Created (UTC)"');
-  expect(lines[0]).toMatch(/^"Status","Amount"/);
+  expect(lines[0]).toContain('"Date (UTC)"');
+  expect(lines[0]).toMatch(/^"Payment method","Amount","Status"/);
   expect(lines.slice(1).every((line) => line.includes('"Succeeded"'))).toBe(
     true,
   );
@@ -44,7 +44,7 @@ test("columns reorder by keyboard and drag, resize and reset accessibly", async 
   await slider.press("ArrowRight");
   await expect(page.locator("th[data-column='amount']")).toHaveCSS(
     "width",
-    "120px",
+    "195px",
   );
   expect(
     (
@@ -61,14 +61,18 @@ test("columns reorder by keyboard and drag, resize and reset accessibly", async 
   });
   await grip.focus();
   await page.keyboard.press("Alt+ArrowRight");
-  await expect(page.locator("th").first()).toContainText("Status");
+  await expect(page.locator("th[data-column]").first()).toContainText(
+    "Payment method",
+  );
   await page
     .getByRole("button", {
       name: "Reorder Customer column. Use Alt and arrow keys.",
       exact: true,
     })
-    .dragTo(page.locator("th").first());
-  await expect(page.locator("th").first()).toContainText("Customer");
+    .dragTo(page.locator("th[data-column]").first());
+  await expect(page.locator("th[data-column]").first()).toContainText(
+    "Customer",
+  );
   const separator = page.getByRole("separator", {
     name: "Resize Amount column",
   });

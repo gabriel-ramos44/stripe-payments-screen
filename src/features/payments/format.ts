@@ -1,6 +1,14 @@
 import { CURRENCY_EXPONENTS, type Currency } from "./types.ts";
 
 export const PAYMENT_TIME_ZONE = "America/Sao_Paulo";
+const shortDateFormat = new Intl.DateTimeFormat("en-US", {
+  timeZone: PAYMENT_TIME_ZONE,
+  month: "short",
+  day: "numeric",
+});
+export function formatShortDate(value: string) {
+  return shortDateFormat.format(new Date(value));
+}
 const dateFormat = new Intl.DateTimeFormat("en-US", {
   timeZone: PAYMENT_TIME_ZONE,
   month: "short",

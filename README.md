@@ -25,6 +25,9 @@ No environment variables or external fonts are required.
   with error recovery, and hover/focus relative-time tooltips in Brasilia time.
 - Search by payment ID, email or last four digits; combine calendar date ranges,
   multi-select statuses/methods, amount bounds and currency filters.
+- Row and page selection with a mixed checkbox state, inline status badges, refund/decline
+  columns, and accessible row-action menus.
+- Six reference summary views, including disputed and uncaptured synthetic payments.
 - Stable date/amount/status sorting and 25/50/100-row pagination, including empty
   states, page resets and disabled boundary navigation.
 - Responsive sidebar/top bar and a mobile drawer with focus trapping and restoration.
@@ -72,12 +75,14 @@ Reports, downloads and failure traces are ignored by Git and are never uploaded.
 
 A native semantic table and a small typed reducer cover this dataset without a
 large table/state dependency. Radix provides keyboard/focus behavior for layered
-controls; Lucide supplies general UI icons. CSS controls visual fidelity.
+controls; extracted Stripe SVGs cover matching dashboard icons and Lucide supplies the rest. CSS controls visual fidelity.
 
 ## Decisions and limits
 
 - Written requirements take priority over conflicting reference details: four
-  required statuses, required Payment ID/Created columns and 25/50/100 page sizes.
+  required statuses, full payment IDs and 25/50/100 page sizes. The creation timestamp
+  uses the reference label Date. Customer absorbs extra desktop width while other
+  columns retain their widths; narrow screens scroll the table horizontally.
 - Cross-currency amount sorting/filtering compares numeric major units without FX
   conversion. A currency filter lets reviewers compare one currency at a time.
 - Calendar presets include today in America/Sao_Paulo; custom endpoints are inclusive.
