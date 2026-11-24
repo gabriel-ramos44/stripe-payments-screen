@@ -100,6 +100,7 @@ export function PaymentsWorkspace({
   }
   return (
     <DashboardShell
+      fitViewport
       search={
         <Input
           type="search"

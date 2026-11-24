@@ -1,4 +1,6 @@
 .tableScroll {
+  /* Contain absolutely positioned accessibility labels inside the scroller. */
+  position: relative;
   max-height: calc(100dvh - 356px);
   max-width: 100%;
   width: 100%;
@@ -6,6 +8,16 @@
   border-bottom: 1px solid var(--border);
   scrollbar-color: #bdc3cb #f4f5f7;
   scrollbar-width: thin;
+}
+@media (min-width: 761px) {
+  .tableScroll {
+    flex: 1;
+    min-height: 120px;
+    max-height: none;
+  }
+  .empty {
+    flex: 1;
+  }
 }
 .table {
   table-layout: fixed;

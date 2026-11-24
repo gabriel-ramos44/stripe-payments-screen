@@ -116,6 +116,7 @@ export function PaymentsTable({
       )}
       <div
         className={styles.tableScroll}
+        data-payments-table
         role="region"
         aria-label="Payments table, scroll horizontally for more columns"
         tabIndex={0}

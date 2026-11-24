@@ -171,9 +171,11 @@ function MoreNavigation() {
 export function DashboardShell({
   children,
   search,
+  fitViewport = false,
 }: {
   children: ReactNode;
   search?: ReactNode;
+  fitViewport?: boolean;
 }) {
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [announcementVisible, setAnnouncementVisible] = useState(true);
@@ -187,7 +189,7 @@ export function DashboardShell({
   }, []);
   return (
     <Dialog.Root open={sidebarOpen} onOpenChange={setSidebarOpen}>
-      <div className={styles.dashboard}>
+      <div className={`${styles.dashboard} ${fitViewport ? styles.viewportDashboard : ""}`}>
         <a className={styles.skipLink} href="#payments-content">
           Skip to payments
         </a>

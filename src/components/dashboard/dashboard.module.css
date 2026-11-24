@@ -241,6 +241,25 @@
   padding: 1px 36px 0;
   outline: none;
 }
+@media (min-width: 761px) {
+  .viewportDashboard .workspace {
+    height: 100dvh;
+    display: flex;
+    flex-direction: column;
+  }
+  .viewportDashboard .topbar {
+    flex-shrink: 0;
+  }
+  .viewportDashboard .main {
+    flex: 1;
+    min-height: 0;
+    display: flex;
+    flex-direction: column;
+  }
+  .viewportDashboard .main > :not([data-payments-table]) {
+    flex-shrink: 0;
+  }
+}
 .headingRow {
   display: flex;
   flex-wrap: wrap;
