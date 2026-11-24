@@ -7,7 +7,6 @@ import {
   ArrowUpDown,
   Check,
   Copy,
-  CreditCard,
   Landmark,
   Wallet,
   X,
@@ -224,37 +223,50 @@ function SortHeader({
 }
 
 function PaymentMethodCell({ method }: { method: Payment["method"] }) {
-  const Icon =
+  const brand = method.type === "ach" ? null : method.brand;
+  const provider =
     method.type === "ach"
-      ? Landmark
+      ? "ACH"
       : method.type === "wallet"
-        ? Wallet
-        : CreditCard;
-  const name =
+        ? method.wallet === "apple_pay"
+          ? "Apple Pay"
+          : "Google Pay"
+        : null;
+  const accessibleName =
     method.type === "ach"
-      ? `ACH · ${method.bankName}`
-      : method.type === "wallet"
-        ? `${method.wallet === "apple_pay" ? "Apple Pay" : "Google Pay"} · ${method.brand}`
-        : method.brand;
+      ? `ACH, ${method.bankName}`
+      : [provider, brand].filter(Boolean).join(", ");
   return (
     <span className={styles.method}>
+      <span className="sr-only">
+        {accessibleName} ending in {method.last4}
+      </span>
       <span
-        className={`${styles.brand} ${method.type !== "ach" ? styles[method.brand] : ""}`}
+        aria-hidden="true"
+        className={`${styles.brand} ${brand ? styles[brand] : ""}`}
       >
-        <Icon size={12} aria-hidden="true" />
+        {brand === "visa" ? (
+          <span className={styles.visaMark}>VISA</span>
+        ) : brand === "mastercard" ? (
+          <svg viewBox="0 0 24 16" width="20" height="14">
+            <circle cx="9" cy="8" r="6" fill="#eb3b2f" />
+            <circle cx="15" cy="8" r="6" fill="#f8a41c" fillOpacity=".9" />
+          </svg>
+        ) : brand === "amex" ? (
+          <span className={styles.amexMark}>AMEX</span>
+        ) : (
+          <Landmark size={12} />
+        )}
       </span>
-      <span className="sr-only">{name} ending in </span>
-      <span aria-hidden="true">•••• </span>
-      {method.last4}
-      <span className={styles.methodName}>
-        {method.type === "ach"
-          ? "ACH"
-          : method.type === "wallet"
-            ? method.wallet === "apple_pay"
-              ? "Apple Pay"
-              : "Google Pay"
-            : method.brand}
+      <span aria-hidden="true">
+        {"\u2022".repeat(4)} {method.last4}
       </span>
+      {provider && (
+        <span className={styles.methodName} aria-hidden="true">
+          {method.type === "wallet" && <Wallet size={11} />}
+          {provider}
+        </span>
+      )}
     </span>
   );
 }

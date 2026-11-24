@@ -85,3 +85,10 @@ required behavior to reproduce the screenshot.
 5. Check tablet/mobile separately; no mobile reference is supplied.
 6. If live access becomes available, verify uncertain states without replacing the
    supplied screenshot with a newer Stripe design.
+
+## Completed comparison pass
+
+Tasks 12–13 normalized the embedded 2048 × 1568 image to 1365 × 1045, compared
+screen geometry and refined sidebar spacing, typography, badges, payment marks and
+table scrolling. Functional checks and 11 reproducible visual states now pass.
+See [QA report](qa-report.md) for evidence, deliberate differences and limits.

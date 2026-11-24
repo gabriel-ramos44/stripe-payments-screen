@@ -1,9 +1,9 @@
 # Stripe payments screen assessment
 
 Local-only Next.js and TypeScript project for the Chargeblast front-end assessment.
-Tasks 1–11 are complete: planning, project setup, reusable UI primitives, responsive
+Tasks 1–13 are complete: planning, project setup, reusable UI primitives, responsive
 dashboard shell, typed data, payments table, search/filters, sorting/pagination and
-accessibility refinements. Optional export, column customization, payment details
+accessibility refinements, production QA and visual regression coverage. Optional export, column customization, payment details
 and unrelated dashboard destinations remain outside this implementation.
 
 ## Run locally
@@ -49,6 +49,7 @@ For a local production preview, run `npm run build` followed by `npm start`.
 - [Requirements and acceptance checklist](docs/requirements.md)
 - [Screenshot measurements and visual inventory](docs/reference-analysis.md)
 - [Implementation decisions and assumptions](docs/implementation-decisions.md)
+- [Functional and visual QA report](docs/qa-report.md)
 
 ## Structure
 
@@ -111,8 +112,13 @@ Lint, strict typecheck, deterministic-data verification, query/state boundary ch
 and production build. Playwright covers search/empty reset, combined multi-select
 filters, invalid ranges, date presets/custom dates, sorting, all page sizes,
 clipboard success/failure, focusable tooltips and mobile navigation. Screenshots
-at 1440, 768, 390 and 320px were checked for contained overflow and page errors.
-Final side-by-side visual polishing remains a separate review stage.
+at 1365, 768, 390 and 320px were checked for contained overflow and page errors.
+The normalized PDF comparison and visual refinements are documented in the QA report.
+Eleven reviewed screenshot baselines cover default/hover/filtered/empty/popover/
+focus/mobile states. `npm run test:e2e` verifies them without changing baselines;
+`npm run test:e2e -- --update-snapshots` regenerates them only for deliberate,
+manually reviewed UI changes. Baselines use Windows and installed Chrome. Open
+the local test report with `npx playwright show-report`; reports are never uploaded.
 
 ESLint is pinned to 9.39.5 because the React, import and accessibility plugins in
 the current Next.js preset declare compatibility through ESLint 9. npm marks this

@@ -18,7 +18,9 @@ from our proposed engineering choices.
 - [x] Task 9: composable search, date/status/method/amount filters, currency refinement and empty/reset states.
 - [x] Task 10: date/amount/status sorting and 25/50/100 pagination, reset/clamp behavior.
 - [x] Task 11: focus-trapped mobile navigation, keyboard-accessible controls, validation feedback and contained overflow.
-- [ ] Tasks 12 onward: dedicated final QA/visual comparison, optional scope and delivery.
+- [x] Task 12: dedicated production QA, expanded functional/boundary checks and fixes.
+- [x] Task 13: normalized reference comparison, visual refinements and screenshot regression baselines.
+- [ ] Tasks 14–15: optional features and delivery; no publication authorized.
 
 ## Required table
 

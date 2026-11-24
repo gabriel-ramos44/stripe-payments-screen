@@ -45,5 +45,43 @@ comparison convention, not a claim about the original browser's zoom or viewport
 The original screenshot remains outside Git; it contains customer-like content.
 Only the app's synthetic fixtures are eligible for committed screenshot baselines.
 
-Visual refinements, reproducible captures and regression results are recorded below
-after the comparison pass.
+Completed refinements:
+
+- Aligned the main content inset and reduced excess space above the heading.
+- Adjusted sidebar group spacing, table/header typography and financial amount weight.
+- Matched compact badge height and dashed filter controls more closely.
+- Replaced generic card icons with compact Visa/Mastercard/Amex marks, retaining
+  accessible brand/method names and ACH/wallet distinctions.
+- Kept the table within available desktop height with sticky headers and internal
+  scrolling. At 1365 × 1045, the pagination footer is asserted to remain in view.
+- Fixed a masking-glyph encoding artifact found during screenshot inspection.
+- Darkened the Amex background after the new mark failed contrast checks.
+
+Committed synthetic-data baselines cover desktop default, row hover, filtered,
+status popover, empty results, date tooltip/focus, mobile, mobile pagination, mobile
+navigation, tablet (768px) and narrow mobile (320px). The primary desktop capture
+is 1365 × 1045; mobile uses 390 × 844. All were inspected for clipping, overflow,
+alignment, focus and readable states. Screenshots are Windows/Chrome baselines;
+different operating systems or browser/font versions may require reviewed baselines.
+
+The screenshot tests compare subsequent runs to these manually reviewed app
+baselines. They are regression tests, not an automatic pixel-perfect match score
+against the PDF. A clean non-update run is required after generating baselines.
+
+Deliberate remaining differences: required statuses/columns and 25/50/100 page
+sizes take precedence over screenshot conflicts; counts and customer content are
+synthetic. Unrelated product shortcuts use representative icons. The original font,
+hover/menu behavior and exact original viewport remain unverified without live
+Stripe access. No claim of exact pixel equality or guaranteed assessment approval
+is made.
+
+## Final verification result
+
+- `npm run check`: lint, strict types, data/query verification and production build passed.
+- Production browser suite: 12 tests passed (9 functional/accessibility, 3 visual).
+- All 11 screenshots passed comparison against unchanged baselines in the final run;
+  no screenshot tolerance was loosened to obtain a pass.
+- Final visual clock uses `setFixedTime`, leaving timers operational while keeping
+  relative tooltip wording deterministic. Time-advancement behavior is independently
+  exercised by the functional suite.
+- Local preview refreshed on port 3001. No deployment, upload or Git push performed.
