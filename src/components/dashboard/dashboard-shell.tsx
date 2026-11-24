@@ -11,11 +11,9 @@ import {
   ChartPie,
   Check,
   ChevronDown,
-  CircleDollarSign,
   CircleHelp,
   Code2,
   CreditCard,
-  Download,
   Ellipsis,
   ExternalLink,
   House,
@@ -25,7 +23,6 @@ import {
   Search,
   Settings,
   ShieldCheck,
-  SlidersHorizontal,
   Sparkles,
   Users,
   Wallet,
@@ -73,14 +70,6 @@ const tabs = [
   "Transfers",
   "All activity",
 ];
-const summaries = [
-  "All",
-  "Succeeded",
-  "Refunded",
-  "Disputed",
-  "Failed",
-  "Uncaptured",
-];
 
 function NavigationGroup({
   title,
@@ -123,7 +112,13 @@ function NavigationGroup({
   );
 }
 
-export function DashboardShell({ children }: { children: ReactNode }) {
+export function DashboardShell({
+  children,
+  search,
+}: {
+  children: ReactNode;
+  search?: ReactNode;
+}) {
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [announcementVisible, setAnnouncementVisible] = useState(true);
   return (
@@ -214,11 +209,9 @@ export function DashboardShell({ children }: { children: ReactNode }) {
           </Button>
           <div className={styles.search}>
             <Search size={14} aria-hidden="true" />
-            <Input
-              aria-label="Search dashboard (available in a later task)"
-              placeholder="Search"
-              disabled
-            />
+            {search ?? (
+              <Input aria-label="Search" placeholder="Search" disabled />
+            )}
           </div>
           <div className={styles.modeNotice}>
             <span>Test mode has moved.</span>
@@ -250,8 +243,9 @@ export function DashboardShell({ children }: { children: ReactNode }) {
             >
               <strong>Payments assessment</strong>
               <p>
-                The dashboard shell is ready. Payment search, filters and table
-                interactions are planned for the next implementation stage.
+                Search payments by ID, customer email or last four digits.
+                Combine date, status, payment method and amount filters to
+                narrow the results.
               </p>
             </Popover>
             <Popover
@@ -354,53 +348,6 @@ export function DashboardShell({ children }: { children: ReactNode }) {
               </Button>
             </div>
           )}
-          <div className={styles.summaries} aria-label="Payment views">
-            {summaries.map((summary) => (
-              <button
-                key={summary}
-                className={summary === "All" ? styles.activeSummary : ""}
-                aria-pressed={summary === "All"}
-                disabled
-                title="Status filtering will be implemented with the payments table"
-              >
-                {summary}
-              </button>
-            ))}
-          </div>
-          <div className={styles.toolbar}>
-            <div className={styles.filters}>
-              {[
-                { label: "Date and time", icon: CircleDollarSign },
-                { label: "Amount", icon: CircleDollarSign },
-                { label: "Currency", icon: CircleDollarSign },
-                { label: "Status", icon: CircleDollarSign },
-                { label: "Payment method", icon: CreditCard },
-                { label: "More filters", icon: SlidersHorizontal },
-              ].map(({ label, icon: Icon }) => (
-                <Button
-                  key={label}
-                  disabled
-                  title="Filters will be implemented in the next stage"
-                >
-                  <Icon />
-                  {label}
-                </Button>
-              ))}
-            </div>
-            <div className={styles.actions}>
-              <Button disabled title="Optional export is not implemented yet">
-                <Download />
-                Export
-              </Button>
-              <Button
-                disabled
-                title="Column customization is not implemented yet"
-              >
-                <Settings />
-                Edit columns
-              </Button>
-            </div>
-          </div>
           {children}
         </main>
       </div>

@@ -108,3 +108,142 @@
 .date {
   cursor: help;
 }
+.summaries {
+  display: grid;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  gap: 7px;
+  margin-bottom: 14px;
+}
+.summaries button {
+  text-align: left;
+  height: 42px;
+  padding: 0 11px;
+  background: white;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  color: #515969;
+  font-size: 12px;
+}
+.summaries button:hover {
+  background: #f8f7ff;
+}
+.summaries .activeSummary {
+  border-color: var(--accent);
+  color: var(--accent);
+}
+.toolbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding-bottom: 10px;
+  border-bottom: 1px solid var(--border);
+}
+.filterButtons {
+  display: flex;
+  gap: 6px;
+  flex-wrap: wrap;
+}
+.filterButtons > button {
+  border-radius: 20px;
+  min-height: 24px;
+  font-size: 11px;
+  padding: 2px 7px;
+  gap: 4px;
+}
+.filterButtons > button svg {
+  width: 11px;
+  height: 11px;
+}
+.filterButtons .activeFilter {
+  border-color: #b5adff;
+  color: #5146d8;
+  background: #f7f5ff;
+}
+.tableActions {
+  display: flex;
+  gap: 6px;
+  flex-shrink: 0;
+}
+.fieldset {
+  display: grid;
+  gap: 8px;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  min-width: 200px;
+}
+.fieldset legend {
+  font-weight: 600;
+  margin-bottom: 12px;
+}
+.checkLabel {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  min-height: 28px;
+}
+.checkLabel input {
+  accent-color: var(--accent);
+  width: 15px;
+  height: 15px;
+}
+.filterForm {
+  display: grid;
+  gap: 12px;
+  width: 260px;
+}
+.filterForm label {
+  display: grid;
+  gap: 6px;
+}
+.filterForm select {
+  padding: 7px;
+  border: 1px solid var(--border);
+  border-radius: 5px;
+  background: white;
+  color: var(--text);
+}
+.hint {
+  color: #596579;
+  font-size: 11px;
+  line-height: 1.5;
+  margin: 0;
+}
+.error {
+  color: #b82146;
+  font-size: 12px;
+  line-height: 1.5;
+  margin: 0;
+}
+.results {
+  margin: 10px 0;
+  color: #596579;
+  font-size: 11px;
+}
+.empty {
+  text-align: center;
+  padding: 70px 16px;
+  border-bottom: 1px solid var(--border);
+}
+.empty h2 {
+  font-size: 17px;
+}
+.empty p {
+  color: #596579;
+}
+@media (max-width: 760px) {
+  .toolbar {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+  .tableActions {
+    align-self: flex-end;
+  }
+  .summaries {
+    grid-template-columns: repeat(3, 1fr);
+  }
+  .summaries button {
+    height: 36px;
+  }
+}
