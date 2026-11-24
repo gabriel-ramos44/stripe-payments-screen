@@ -7,6 +7,43 @@ import {
 import { PAYMENT_TIME_ZONE } from "./format.ts";
 
 export type DatePreset = "all" | "today" | "7days" | "30days" | "custom";
+export type SortKey = "createdAt" | "amountMinor" | "status";
+export type PaymentSort = { key: SortKey; direction: "asc" | "desc" };
+export const PAGE_SIZES = [25, 50, 100] as const;
+export type PageSize = (typeof PAGE_SIZES)[number];
+const statusOrder = { succeeded: 0, pending: 1, failed: 2, refunded: 3 };
+export function sortPayments(
+  payments: readonly Payment[],
+  sort: PaymentSort,
+): Payment[] {
+  const value = (payment: Payment) =>
+    sort.key === "status"
+      ? statusOrder[payment.status]
+      : sort.key === "createdAt"
+        ? Date.parse(payment.createdAt)
+        : payment.amountMinor / 10 ** CURRENCY_EXPONENTS[payment.currency];
+  return [...payments].sort(
+    (a, b) =>
+      (value(a) - value(b)) * (sort.direction === "asc" ? 1 : -1) ||
+      a.id.localeCompare(b.id),
+  );
+}
+export function paginatePayments(
+  payments: readonly Payment[],
+  page: number,
+  pageSize: PageSize,
+) {
+  const pageCount = Math.max(1, Math.ceil(payments.length / pageSize));
+  const currentPage = Math.min(Math.max(1, page), pageCount);
+  const offset = (currentPage - 1) * pageSize;
+  return {
+    rows: payments.slice(offset, offset + pageSize),
+    currentPage,
+    pageCount,
+    first: payments.length ? offset + 1 : 0,
+    last: Math.min(offset + pageSize, payments.length),
+  };
+}
 export type PaymentFilters = {
   search: string;
   statuses: PaymentStatus[];

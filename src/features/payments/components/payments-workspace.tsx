@@ -1,12 +1,19 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useMemo, useReducer } from "react";
 import { DashboardShell } from "@/components/dashboard/dashboard-shell";
 import { Input, Button } from "@/components/ui/primitives";
 import type { Payment } from "../types";
-import { emptyFilters, filterPayments } from "../query";
+import {
+  filterPayments,
+  sortPayments,
+  paginatePayments,
+  type PaymentFilters,
+} from "../query";
+import { initialPaymentsState, paymentsReducer } from "../state";
 import { PaymentsTable } from "./payments-table";
 import { PaymentsFilters } from "./payments-filters";
+import { PaymentsPagination } from "./payments-pagination";
 import styles from "./payments.module.css";
 
 export function PaymentsWorkspace({
@@ -16,11 +23,20 @@ export function PaymentsWorkspace({
   payments: Payment[];
   referenceTime: string;
 }) {
-  const [filters, setFilters] = useState(emptyFilters);
+  const [{ filters, sort, page, pageSize }, dispatch] = useReducer(
+    paymentsReducer,
+    undefined,
+    initialPaymentsState,
+  );
+  const setFilters = (filters: PaymentFilters) =>
+    dispatch({ type: "filters", filters });
+  const reset = () => dispatch({ type: "reset" });
   const filtered = useMemo(
     () => filterPayments(payments, filters, referenceTime),
     [payments, filters, referenceTime],
   );
+  const sorted = useMemo(() => sortPayments(filtered, sort), [filtered, sort]);
+  const pagination = paginatePayments(sorted, page, pageSize);
   return (
     <DashboardShell
       search={
@@ -38,25 +54,35 @@ export function PaymentsWorkspace({
       <PaymentsFilters
         filters={filters}
         onChange={setFilters}
-        onReset={() => setFilters(emptyFilters())}
+        onReset={reset}
       />
       <p className={styles.results} role="status">
         {filtered.length} matching payments
       </p>
       {filtered.length ? (
         <PaymentsTable
-          payments={filtered.slice(0, 25)}
+          payments={pagination.rows}
           referenceTime={referenceTime}
+          sort={sort}
+          onSort={(key) => dispatch({ type: "sort", key })}
         />
       ) : (
         <section className={styles.empty}>
           <h2>No payments found</h2>
           <p>Try another search or adjust your filters.</p>
-          <Button onClick={() => setFilters(emptyFilters())}>
-            Clear all filters
-          </Button>
+          <Button onClick={reset}>Clear all filters</Button>
         </section>
       )}
+      <PaymentsPagination
+        page={pagination.currentPage}
+        pageCount={pagination.pageCount}
+        first={pagination.first}
+        last={pagination.last}
+        total={filtered.length}
+        pageSize={pageSize}
+        onPageChange={(page) => dispatch({ type: "page", page })}
+        onPageSizeChange={(size) => dispatch({ type: "pageSize", size })}
+      />
     </DashboardShell>
   );
 }

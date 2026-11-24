@@ -1,18 +1,32 @@
 "use client";
 
 import { useState } from "react";
-import { Check, Copy, CreditCard, Landmark, Wallet } from "lucide-react";
+import {
+  ArrowDown,
+  ArrowUp,
+  ArrowUpDown,
+  Check,
+  Copy,
+  CreditCard,
+  Landmark,
+  Wallet,
+} from "lucide-react";
 import { Button, StatusBadge, Tooltip } from "@/components/ui/primitives";
 import type { Payment } from "../types";
 import { formatAmount, formatCreated, formatRelative } from "../format";
+import type { PaymentSort, SortKey } from "../query";
 import styles from "./payments.module.css";
 
 export function PaymentsTable({
   payments,
   referenceTime,
+  sort,
+  onSort,
 }: {
   payments: readonly Payment[];
   referenceTime: string;
+  sort: PaymentSort;
+  onSort: (key: SortKey) => void;
 }) {
   const [copiedId, setCopiedId] = useState<string | null>(null);
   const [notice, setNotice] = useState("");
@@ -43,12 +57,27 @@ export function PaymentsTable({
           </caption>
           <thead>
             <tr>
-              <th scope="col">Amount</th>
-              <th scope="col">Status</th>
+              <SortHeader
+                label="Amount"
+                column="amountMinor"
+                sort={sort}
+                onSort={onSort}
+              />
+              <SortHeader
+                label="Status"
+                column="status"
+                sort={sort}
+                onSort={onSort}
+              />
               <th scope="col">Payment method</th>
               <th scope="col">Description</th>
               <th scope="col">Customer</th>
-              <th scope="col">Created</th>
+              <SortHeader
+                label="Created"
+                column="createdAt"
+                sort={sort}
+                onSort={onSort}
+              />
               <th scope="col">Payment ID</th>
             </tr>
           </thead>
@@ -111,6 +140,46 @@ export function PaymentsTable({
         </table>
       </div>
     </>
+  );
+}
+
+function SortHeader({
+  label,
+  column,
+  sort,
+  onSort,
+}: {
+  label: string;
+  column: SortKey;
+  sort: PaymentSort;
+  onSort: (key: SortKey) => void;
+}) {
+  const active = sort.key === column;
+  const Icon = active
+    ? sort.direction === "asc"
+      ? ArrowUp
+      : ArrowDown
+    : ArrowUpDown;
+  return (
+    <th
+      scope="col"
+      aria-sort={
+        active
+          ? sort.direction === "asc"
+            ? "ascending"
+            : "descending"
+          : "none"
+      }
+    >
+      <button
+        className={styles.sortButton}
+        onClick={() => onSort(column)}
+        aria-label={`Sort by ${label.toLowerCase()} ${active && sort.direction === "asc" ? "descending" : "ascending"}`}
+      >
+        {label}
+        <Icon size={12} aria-hidden="true" />
+      </button>
+    </th>
   );
 }
 

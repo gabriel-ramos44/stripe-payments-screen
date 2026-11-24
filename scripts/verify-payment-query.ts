@@ -7,6 +7,14 @@ import {
   validateFilters,
 } from "../src/features/payments/query.ts";
 import { formatAmount } from "../src/features/payments/format.ts";
+import {
+  sortPayments,
+  paginatePayments,
+} from "../src/features/payments/query.ts";
+import {
+  initialPaymentsState,
+  paymentsReducer,
+} from "../src/features/payments/state.ts";
 
 const reference = "2026-11-24T15:00:00Z";
 const payments = createMockPayments({ anchor: new Date(reference) });
@@ -130,6 +138,63 @@ assert.ok(
 );
 assert.equal(formatAmount(2500, "JPY"), "¥2,500");
 assert.equal(formatAmount(988, "USD"), "$9.88");
+const unsorted = [
+  { ...base, id: "z", amountMinor: 1000, currency: "JPY" as const },
+  { ...base, id: "a", amountMinor: 9999, currency: "USD" as const },
+  { ...base, id: "b", amountMinor: 9999, currency: "USD" as const },
+];
+assert.deepEqual(
+  sortPayments(unsorted, { key: "amountMinor", direction: "asc" }).map(
+    (p) => p.id,
+  ),
+  ["a", "b", "z"],
+);
+assert.deepEqual(
+  sortPayments(unsorted, { key: "amountMinor", direction: "desc" }).map(
+    (p) => p.id,
+  ),
+  ["z", "a", "b"],
+);
+assert.equal(unsorted[0]!.id, "z", "sorting must not mutate the input");
+for (const direction of ["asc", "desc"] as const) {
+  const sorted = sortPayments(payments, { key: "createdAt", direction });
+  assert.ok(
+    sorted.every(
+      (p, i) =>
+        i === 0 ||
+        (direction === "asc"
+          ? p.createdAt >= sorted[i - 1]!.createdAt
+          : p.createdAt <= sorted[i - 1]!.createdAt),
+    ),
+  );
+}
+assert.equal(
+  sortPayments(payments, { key: "status", direction: "asc" })[0]!.status,
+  "succeeded",
+);
+assert.equal(
+  sortPayments(payments, { key: "status", direction: "desc" })[0]!.status,
+  "refunded",
+);
+for (const size of [25, 50, 100] as const) {
+  const page = paginatePayments(payments, 2, size);
+  assert.equal(page.rows.length, size);
+  assert.equal(page.first, size + 1);
+  assert.equal(page.last, size * 2);
+  assert.deepEqual(page.rows, payments.slice(size, size * 2));
+}
+assert.equal(paginatePayments(payments.slice(0, 26), 2, 25).rows.length, 1);
+assert.equal(paginatePayments(payments.slice(0, 26), 99, 25).currentPage, 2);
+assert.equal(paginatePayments([], 20, 25).first, 0);
+assert.equal(paginatePayments([], 20, 25).last, 0);
+const state = { ...initialPaymentsState(), page: 10 };
+assert.equal(
+  paymentsReducer(state, { type: "filters", filters: emptyFilters() }).page,
+  1,
+);
+assert.equal(paymentsReducer(state, { type: "pageSize", size: 100 }).page, 1);
+assert.equal(paymentsReducer(state, { type: "sort", key: "status" }).page, 1);
+assert.equal(paymentsReducer(state, { type: "reset" }).page, 1);
 console.log(
   "Verified search, combined filters, amount/date boundaries, calendar presets and currency precision.",
 );
