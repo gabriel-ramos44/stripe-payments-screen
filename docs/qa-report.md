@@ -118,35 +118,3 @@ tests against unchanged screenshot baselines (13 functional/accessibility tests,
 four visual tests, 13 reviewed images). Pointer resizing and short-screen column
 panel scrolling passed as well. The refreshed port-3001 preview returned HTTP 200.
 All changes remain local; no push, deployment, collaborator change or email send occurred.
-
-## Reference fidelity follow-up
-
-The default screen now uses the reference's six view labels and order: All,
-Succeeded, Refunded, Disputed, Failed, Uncaptured. Pending remains in the required
-Status filter. Disputed and uncaptured records have separate explicit mock fields;
-neither view is an alias for the Pending status.
-
-Status badges moved into Amount. Native row checkboxes, page selection, row menus,
-Date (createdAt), Refunded date and Decline reason restore the reference hierarchy.
-Payment ID remains an additional column to the right, reachable by horizontal
-scrolling; status sorting is available through the Amount header's sorting menu.
-More filters contains reset rather than adding a non-reference Reset chip.
-
-Card logos use MIT-licensed React Payment Logos. Inter is bundled locally through
-Fontsource under OFL-1.1, and the Cramly mark is extracted from the supplied reference.
-Sources and limitations are documented in assets.md. Inter is a visual approximation,
-not a verified identification of Stripe's internal font. The exact private icon set
-and original menus remain unverified; Radix and Lucide remain the control foundation.
-
-New visuals include row selection and row menus. The suite now contains 18 tests
-(14 functional/accessibility and four visual) with 15 synthetic screenshot baselines.
-The footer geometry guard caught a 2px overflow after the font change; table height
-was corrected rather than relaxing the assertion. Tests also caught and corrected
-an encoded tooltip string. Generated Playwright traces are now excluded from ESLint
-alongside other build artifacts; source lint rules remain unchanged.
-
-Final follow-up result: lint, types, data/query checks and production build passed.
-All 18 production tests and all 15 reviewed screenshots passed without baseline
-updates in the final run. The local preview was refreshed at localhost:3001.
-No push or deployment was performed. Unidentified product-switcher marks and the
-exact internal Stripe icon set remain approximations rather than verified assets.
