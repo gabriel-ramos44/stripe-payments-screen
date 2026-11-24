@@ -2,6 +2,9 @@
 
 import { useEffect, useState } from "react";
 import Link from "next/link";
+import Visa from "react-payment-logos/dist/flat/Visa";
+import Mastercard from "react-payment-logos/dist/flat/Mastercard";
+import Amex from "react-payment-logos/dist/flat/Amex";
 import { Check, Copy, Landmark, Wallet, X } from "lucide-react";
 import { Button, StatusBadge, Tooltip } from "@/components/ui/primitives";
 import type { Payment } from "../types";
@@ -254,21 +257,15 @@ function PaymentMethodCell({ method }: { method: Payment["method"] }) {
       <span className="sr-only">
         {accessibleName} ending in {method.last4}
       </span>
-      <span
-        aria-hidden="true"
-        className={`${styles.brand} ${brand ? styles[brand] : ""}`}
-      >
+      <span aria-hidden="true" className={styles.paymentLogo}>
         {brand === "visa" ? (
-          <span className={styles.visaMark}>VISA</span>
+          <Visa width={23} height={18} />
         ) : brand === "mastercard" ? (
-          <svg viewBox="0 0 24 16" width="20" height="14">
-            <circle cx="9" cy="8" r="6" fill="#eb3b2f" />
-            <circle cx="15" cy="8" r="6" fill="#f8a41c" fillOpacity=".9" />
-          </svg>
+          <Mastercard width={23} height={18} />
         ) : brand === "amex" ? (
-          <span className={styles.amexMark}>AMEX</span>
+          <Amex width={23} height={18} />
         ) : (
-          <Landmark size={12} />
+          <Landmark size={13} />
         )}
       </span>
       <span aria-hidden="true">
