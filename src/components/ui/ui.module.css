@@ -1,0 +1,23 @@
+.button { display: inline-flex; align-items: center; justify-content: center; gap: 6px; min-height: 28px; padding: 4px 9px; border: 1px solid var(--border); border-radius: var(--radius); background: white; color: var(--text); font-size: 12px; font-weight: 500; box-shadow: 0 1px 2px #1a1f3608; white-space: nowrap; }
+.button:hover:not(:disabled) { background: var(--surface); border-color: #c5ccd6; }
+.button:disabled { opacity: .45; }
+.primary { background: var(--accent); border-color: var(--accent); color: white; }
+.primary:hover:not(:disabled) { background: #534bdf; border-color: #534bdf; }
+.ghost { background: transparent; border-color: transparent; box-shadow: none; }
+.icon { padding: 5px; width: 28px; }
+.input { width: 100%; min-height: 30px; padding: 6px 9px; border: 1px solid var(--border); border-radius: var(--radius); color: var(--text); background: white; }
+.input::placeholder { color: var(--muted); }
+.badge { display: inline-flex; align-items: center; gap: 4px; padding: 1px 5px; border: 1px solid; border-radius: 4px; font-size: 11px; line-height: 16px; white-space: nowrap; }
+.badge svg { width: 11px; height: 11px; }
+.succeeded { color: #237a37; background: #e4f8d5; border-color: #b8e5a2; }
+.pending { color: #8c6413; background: #fff7d6; border-color: #f1dfa0; }
+.failed { color: #c83454; background: #fff0f3; border-color: #ffd0d9; }
+.refunded { color: #586579; background: #f1f3f6; border-color: #d9dfe7; }
+.overlay { z-index: 60; min-width: 210px; max-width: min(340px, calc(100vw - 24px)); padding: 6px; background: white; border: 1px solid var(--border); border-radius: 7px; box-shadow: var(--shadow); }
+.item { display: flex; align-items: center; gap: 8px; padding: 8px 10px; border-radius: 4px; outline: none; cursor: pointer; }
+.item[data-highlighted] { background: var(--accent-soft); color: var(--accent); }
+.item[data-disabled] { opacity: .45; cursor: default; }
+.label { padding: 8px 10px; font-size: 11px; color: var(--muted); }
+.separator { height: 1px; margin: 5px 0; background: var(--border); }
+.tooltip { z-index: 70; max-width: 260px; padding: 7px 10px; border-radius: 5px; color: white; background: #30313d; box-shadow: var(--shadow); font-size: 12px; }
+.popover { padding: 16px; }
