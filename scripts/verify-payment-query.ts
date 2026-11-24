@@ -138,6 +138,11 @@ assert.ok(
 );
 assert.equal(formatAmount(2500, "JPY"), "¥2,500");
 assert.equal(formatAmount(988, "USD"), "$9.88");
+assert.equal(
+  validateFilters({ ...emptyFilters(), minAmount: ".50", maxAmount: "1." }),
+  null,
+);
+assert.ok(validateFilters({ ...emptyFilters(), minAmount: "1e3" }));
 const unsorted = [
   { ...base, id: "z", amountMinor: 1000, currency: "JPY" as const },
   { ...base, id: "a", amountMinor: 9999, currency: "USD" as const },

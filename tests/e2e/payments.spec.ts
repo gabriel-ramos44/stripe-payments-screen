@@ -2,7 +2,95 @@ import { expect, test } from "@playwright/test";
 import AxeBuilder from "@axe-core/playwright";
 
 test.beforeEach(async ({ page }) => {
+  await page.clock.install({ time: new Date("2026-11-24T15:00:00.000Z") });
   await page.goto("/payments");
+});
+
+test("direct navigation is stable and does not emit browser errors", async ({
+  page,
+}) => {
+  const errors: string[] = [];
+  page.on("pageerror", (error) => errors.push(error.message));
+  const firstId = await page
+    .getByRole("button", { name: /^Copy payment ID/ })
+    .first()
+    .getAttribute("aria-label");
+  await page.goto("/");
+  await expect(page).toHaveURL(/\/payments$/);
+  await expect(
+    page.getByRole("button", { name: /^Copy payment ID/ }).first(),
+  ).toHaveAttribute("aria-label", firstId!);
+  await page.reload();
+  await expect(page.locator("tbody tr")).toHaveCount(25);
+  expect(errors).toEqual([]);
+});
+
+test("last page and a filter after paging show correct boundaries", async ({
+  page,
+}) => {
+  await page.getByLabel("Rows per page").selectOption("100");
+  for (let i = 0; i < 4; i++)
+    await page.getByRole("button", { name: "Next", exact: true }).click();
+  await expect(page.getByText("Viewing 401–500 of 500 results")).toBeVisible();
+  await expect(
+    page.getByRole("button", { name: "Next", exact: true }),
+  ).toBeDisabled();
+  await page.getByRole("button", { name: "Pending", exact: true }).click();
+  await expect(
+    page.getByRole("button", { name: "Previous", exact: true }),
+  ).toBeDisabled();
+  await expect(
+    page.locator("tbody tr").first().locator("td").nth(1),
+  ).toHaveText("Pending");
+  await page.getByRole("button", { name: "Sort by status ascending" }).click();
+  await expect(page.getByRole("columnheader").nth(1)).toHaveAttribute(
+    "aria-sort",
+    "ascending",
+  );
+  await page.getByRole("button", { name: "Sort by created ascending" }).click();
+  await expect(page.locator("th[aria-sort='ascending']")).toHaveCount(1);
+});
+
+test("custom date validation and dismissed drafts preserve applied filters", async ({
+  page,
+}) => {
+  await page
+    .getByRole("button", { name: "Date and time", exact: true })
+    .click();
+  await page.getByLabel("Date range", { exact: true }).selectOption("custom");
+  await page.getByLabel("Start date").fill("2026-11-25");
+  await page.getByLabel("End date").fill("2026-11-24");
+  await page.getByRole("button", { name: "Apply dates" }).click();
+  await expect(
+    page.getByRole("alert").filter({ hasText: "Start date" }),
+  ).toBeVisible();
+  await page.keyboard.press("Escape");
+  await expect(page.getByText("Viewing 1–25 of 500 results")).toBeVisible();
+  await page
+    .getByRole("button", { name: "Date and time", exact: true })
+    .click();
+  await expect(page.getByLabel("Date range", { exact: true })).toHaveValue(
+    "all",
+  );
+  await page.keyboard.press("Escape");
+});
+
+test("relative date tooltip refreshes as time passes and keyboard filters restore focus", async ({
+  page,
+}) => {
+  await page.clock.fastForward("02:00:00");
+  await page.locator("time").first().focus();
+  await expect(page.getByRole("tooltip")).toContainText("2 hours ago");
+  await page.keyboard.press("Escape");
+  const status = page.getByRole("button", { name: "Status", exact: true });
+  await status.focus();
+  await page.keyboard.press("Enter");
+  await page.getByRole("checkbox", { name: "Pending", exact: true }).focus();
+  await page.keyboard.press("Space");
+  await page.keyboard.press("Escape");
+  await expect(
+    page.getByRole("button", { name: "Status (1)", exact: true }),
+  ).toBeFocused();
 });
 
 test("search, empty recovery, sorting and pagination work together", async ({
@@ -158,6 +246,14 @@ test("date presets, custom dates, tooltip and clipboard feedback", async ({
   await expect(
     page.getByRole("status").filter({ hasText: "Could not copy" }),
   ).toContainText(id);
+  await page.clock.fastForward(10_000);
+  await expect(
+    page.getByRole("status").filter({ hasText: "Could not copy" }),
+  ).toBeVisible();
+  await page.getByRole("button", { name: "Dismiss copy error" }).click();
+  await expect(
+    page.getByRole("status").filter({ hasText: "Could not copy" }),
+  ).toHaveCount(0);
 });
 
 test("mobile navigation traps focus, restores focus and keeps table overflow contained", async ({

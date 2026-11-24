@@ -88,7 +88,7 @@ export function validateFilters(filters: PaymentFilters): string | null {
   const { minAmount, maxAmount, startDate, endDate } = filters;
   const validAmount = (value: string) =>
     value === "" ||
-    (/^\d+(\.\d+)?$/.test(value) &&
+    (/^(?:\d+(?:\.\d*)?|\.\d+)$/.test(value) &&
       Number.isFinite(Number(value)) &&
       Number(value) >= 0);
   if (!validAmount(minAmount) || !validAmount(maxAmount))

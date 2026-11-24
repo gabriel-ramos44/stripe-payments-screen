@@ -10,6 +10,7 @@ import {
   CreditCard,
   Landmark,
   Wallet,
+  X,
 } from "lucide-react";
 import { Button, StatusBadge, Tooltip } from "@/components/ui/primitives";
 import type { Payment } from "../types";
@@ -30,21 +31,24 @@ export function PaymentsTable({
 }) {
   const [copiedId, setCopiedId] = useState<string | null>(null);
   const [notice, setNotice] = useState("");
+  const [copyFailed, setCopyFailed] = useState(false);
   useEffect(() => {
-    if (!notice) return;
+    if (!notice || copyFailed) return;
     const timer = window.setTimeout(() => {
       setNotice("");
       setCopiedId(null);
     }, 6000);
     return () => window.clearTimeout(timer);
-  }, [notice]);
+  }, [notice, copyFailed]);
   async function copyId(id: string) {
     try {
       await navigator.clipboard.writeText(id);
       setCopiedId(id);
+      setCopyFailed(false);
       setNotice(`Copied payment ID ${id}`);
     } catch {
       setCopiedId(null);
+      setCopyFailed(true);
       setNotice(`Could not copy. Select this payment ID manually: ${id}`);
     }
   }
@@ -52,6 +56,16 @@ export function PaymentsTable({
     <>
       <p role="status" className={notice ? styles.copyNotice : "sr-only"}>
         {notice}
+        {copyFailed && notice && (
+          <Button
+            variant="ghost"
+            iconOnly
+            aria-label="Dismiss copy error"
+            onClick={() => setNotice("")}
+          >
+            <X aria-hidden="true" />
+          </Button>
+        )}
       </p>
       <div
         className={styles.tableScroll}
@@ -110,17 +124,10 @@ export function PaymentsTable({
                   <span className={styles.email}>{payment.customer.email}</span>
                 </td>
                 <td>
-                  <Tooltip
-                    content={`${formatRelative(payment.createdAt, referenceTime)} · Brasília time (America/Sao_Paulo)`}
-                  >
-                    <time
-                      tabIndex={0}
-                      dateTime={payment.createdAt}
-                      className={styles.date}
-                    >
-                      {formatCreated(payment.createdAt)}
-                    </time>
-                  </Tooltip>
+                  <CreatedDate
+                    value={payment.createdAt}
+                    referenceTime={referenceTime}
+                  />
                 </td>
                 <td>
                   <div className={styles.paymentId}>
@@ -151,6 +158,28 @@ export function PaymentsTable({
         </table>
       </div>
     </>
+  );
+}
+
+function CreatedDate({
+  value,
+  referenceTime,
+}: {
+  value: string;
+  referenceTime: string;
+}) {
+  const [now, setNow] = useState(referenceTime);
+  return (
+    <Tooltip
+      content={`${formatRelative(value, now)} · Brasília time (America/Sao_Paulo)`}
+      onOpenChange={(open) => {
+        if (open) setNow(new Date().toISOString());
+      }}
+    >
+      <time tabIndex={0} dateTime={value} className={styles.date}>
+        {formatCreated(value)}
+      </time>
+    </Tooltip>
   );
 }
 

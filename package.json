@@ -11,7 +11,7 @@
     "typecheck": "next typegen && tsc --noEmit",
     "verify:data": "node --experimental-strip-types scripts/verify-mock-data.ts",
     "verify:query": "node --experimental-strip-types scripts/verify-payment-query.ts",
-    "test:e2e": "playwright test",
+    "test:e2e": "npm run build && playwright test",
     "check": "npm run lint && npm run typecheck && npm run verify:data && npm run verify:query && npm run build"
   },
   "engines": {

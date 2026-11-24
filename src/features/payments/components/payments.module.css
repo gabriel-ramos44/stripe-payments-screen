@@ -107,6 +107,9 @@
   color: var(--muted);
 }
 .copyNotice {
+  display: flex;
+  align-items: center;
+  gap: 10px;
   position: fixed;
   bottom: 20px;
   left: 50%;
@@ -122,6 +125,8 @@
   font-size: 12px;
   overflow-wrap: anywhere;
 }
+.copyNotice button { color: white; border-color: #ffffff60; flex-shrink: 0; }
+.copyNotice button:hover:not(:disabled) { background: #4b4d61; }
 .idText {
   user-select: all;
 }

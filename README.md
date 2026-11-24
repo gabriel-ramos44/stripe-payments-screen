@@ -34,7 +34,10 @@ npm run build
 npm run test:e2e
 ```
 
-Playwright starts a local development server on port 3100 and uses one worker.
+Playwright builds the app, then starts its own production server on port 3200 and
+uses one worker. Keep that port free. Its server and browser use a fixed QA clock;
+normal local use still uses current dates. Optional server-only
+`PAYMENTS_MOCK_ANCHOR` accepts a valid timestamp for reproducible local inspection.
 Axe checks the default screen, open status filter, mobile screen and mobile drawer.
 Failure traces and reports are ignored by Git. This is targeted verification;
 automated accessibility checks do not replace manual keyboard/screen-reader review.

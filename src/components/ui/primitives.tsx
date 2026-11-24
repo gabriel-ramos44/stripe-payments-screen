@@ -70,13 +70,15 @@ export function StatusBadge({ status }: { status: BadgeStatus }) {
 export function Tooltip({
   children,
   content,
+  onOpenChange,
 }: {
   children: ReactElement;
   content: ReactNode;
+  onOpenChange?: (open: boolean) => void;
 }) {
   return (
     <TooltipPrimitive.Provider delayDuration={350}>
-      <TooltipPrimitive.Root>
+      <TooltipPrimitive.Root {...(onOpenChange ? { onOpenChange } : {})}>
         <TooltipPrimitive.Trigger asChild>{children}</TooltipPrimitive.Trigger>
         <TooltipPrimitive.Portal>
           <TooltipPrimitive.Content className={styles.tooltip} sideOffset={6}>
