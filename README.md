@@ -85,6 +85,9 @@ Icon fidelity: some icons are approximations rather than pixel-perfect matches. 
   required statuses, full payment IDs and 25/50/100 page sizes. The creation timestamp
   uses the reference label Date. Customer absorbs extra desktop width while other
   columns retain their widths; narrow screens scroll the table horizontally.
+- The desktop table fills the remaining viewport height and scrolls internally;
+  mobile keeps natural page scrolling. Accessibility labels stay inside the table
+  scroller so off-screen rows cannot create blank document overflow.
 - Cross-currency amount sorting/filtering compares numeric major units without FX
   conversion. A currency filter lets reviewers compare one currency at a time.
 - Calendar presets include today in America/Sao_Paulo; custom endpoints are inclusive.

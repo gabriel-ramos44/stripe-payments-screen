@@ -6,6 +6,36 @@ test.beforeEach(async ({ page }) => {
   await page.goto("/payments");
 });
 
+test("table overflow stays inside its scroller without blank page overflow", async ({ page }) => {
+  for (const viewport of [
+    { width: 1920, height: 1080 },
+    { width: 1365, height: 1045 },
+    { width: 828, height: 891 },
+    { width: 1024, height: 600 },
+  ]) {
+    await page.setViewportSize(viewport);
+    for (const size of ["25", "100"]) {
+      await page.getByLabel("Rows per page").selectOption(size);
+      const geometry = await page.evaluate(() => ({
+        height: innerHeight,
+        documentHeight: document.documentElement.scrollHeight,
+        paginationBottom: document.querySelector('[aria-label="Payments pagination"]')!.getBoundingClientRect().bottom,
+        tableHeight: document.querySelector('[data-payments-table]')!.clientHeight,
+        tableContentHeight: document.querySelector('[data-payments-table]')!.scrollHeight,
+      }));
+      expect(geometry.documentHeight).toBeLessThanOrEqual(geometry.height + 1);
+      expect(geometry.paginationBottom).toBeLessThanOrEqual(geometry.height + 1);
+      expect(geometry.tableContentHeight).toBeGreaterThan(geometry.tableHeight);
+    }
+  }
+  await page.setViewportSize({ width: 390, height: 844 });
+  const mobile = await page.evaluate(() => ({
+    documentHeight: document.documentElement.scrollHeight,
+    contentBottom: document.body.getBoundingClientRect().bottom + scrollY,
+  }));
+  expect(mobile.documentHeight).toBeLessThanOrEqual(mobile.contentBottom + 1);
+});
+
 test("More navigation expands by keyboard and remains usable on short mobile screens", async ({ page }) => {
   const more = page.getByRole("button", { name: "More", exact: true });
   await expect(more).toHaveAttribute("aria-expanded", "false");
