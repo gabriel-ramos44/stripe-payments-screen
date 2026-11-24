@@ -1,36 +1,38 @@
 "use client";
 
-import { useEffect, useState, type ReactNode } from "react";
+import { useEffect, useState, type ComponentType, type ReactNode } from "react";
 import Link from "next/link";
 import * as Dialog from "@radix-ui/react-dialog";
 import {
   Activity,
+  ChartPie,
+  Check,
+  ExternalLink,
+  Layers,
+  Menu as MenuIcon,
+  ShieldCheck,
+  Sparkles,
+} from "lucide-react";
+import {
   ArrowDownUp,
   Bell,
   BookOpen,
   Box,
   ChartNoAxesCombined,
-  ChartPie,
-  Check,
   ChevronDown,
   CircleHelp,
   Code2,
   CreditCard,
   Ellipsis,
-  ExternalLink,
   House,
-  Layers,
-  Menu as MenuIcon,
   Plus,
   Search,
   Settings,
-  ShieldCheck,
-  Sparkles,
   Users,
   Wallet,
   X,
-  type LucideIcon,
-} from "lucide-react";
+  type StripeIconProps,
+} from "@/components/ui/stripe-icons";
 import {
   Button,
   Input,
@@ -43,7 +45,11 @@ import {
 } from "@/components/ui/primitives";
 import styles from "./dashboard.module.css";
 
-type NavigationItem = { label: string; icon: LucideIcon; expandable?: boolean };
+type NavigationItem = {
+  label: string;
+  icon: ComponentType<StripeIconProps>;
+  expandable?: boolean;
+};
 const mainNavigation: NavigationItem[] = [
   { label: "Home", icon: House },
   { label: "Balances", icon: Wallet },

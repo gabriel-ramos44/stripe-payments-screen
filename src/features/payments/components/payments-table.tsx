@@ -2,7 +2,8 @@
 
 import { useEffect, useState } from "react";
 import Link from "next/link";
-import { Check, Copy, Landmark, Wallet, X } from "lucide-react";
+import { Check, Copy, Landmark, Wallet } from "lucide-react";
+import { X } from "@/components/ui/stripe-icons";
 import { Button, StatusBadge, Tooltip } from "@/components/ui/primitives";
 import type { Payment } from "../types";
 import { formatAmount, formatCreated, formatRelative } from "../format";

@@ -1,5 +1,6 @@
 "use client";
-import { ArrowDown, ArrowUp, Settings } from "lucide-react";
+import { ArrowDown, ArrowUp } from "lucide-react";
+import { Settings } from "@/components/ui/stripe-icons";
 import { Button, Popover } from "@/components/ui/primitives";
 import { columnDefinition, type ColumnId, type ColumnWidths } from "../columns";
 import styles from "./payments.module.css";

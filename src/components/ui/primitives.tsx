@@ -3,7 +3,8 @@
 import * as Dropdown from "@radix-ui/react-dropdown-menu";
 import * as PopoverPrimitive from "@radix-ui/react-popover";
 import * as TooltipPrimitive from "@radix-ui/react-tooltip";
-import { Check, Clock3, RotateCcw, X } from "lucide-react";
+import { Check, RotateCcw } from "lucide-react";
+import { Clock3, X } from "./stripe-icons";
 import {
   forwardRef,
   type ButtonHTMLAttributes,
