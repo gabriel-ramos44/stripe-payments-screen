@@ -1,0 +1,110 @@
+.tableScroll {
+  width: 100%;
+  overflow-x: auto;
+  border-bottom: 1px solid var(--border);
+  scrollbar-color: #bdc3cb #f4f5f7;
+  scrollbar-width: thin;
+}
+.table {
+  width: 100%;
+  border-collapse: collapse;
+  white-space: nowrap;
+  font-size: 12px;
+  text-align: left;
+}
+.table th {
+  height: 34px;
+  font-size: 11px;
+  color: #454b59;
+  font-weight: 600;
+  background: #fff;
+}
+.table td,
+.table th {
+  padding: 4px 12px;
+  border-bottom: 1px solid #edf0f3;
+}
+.table td {
+  height: 39px;
+}
+.table tr:hover td {
+  background: #f8f9fc;
+}
+.table th:first-child,
+.amount {
+  text-align: right;
+}
+.amount {
+  font-variant-numeric: tabular-nums;
+  font-weight: 500;
+}
+.currency {
+  font-size: 10px;
+  margin-left: 8px;
+  color: var(--muted);
+  font-weight: 400;
+}
+.muted,
+.email,
+.date {
+  color: #596579;
+}
+.customerName {
+  display: none;
+}
+.paymentId {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 11px;
+  color: #596579;
+}
+.paymentId button {
+  width: 23px;
+  min-height: 23px;
+  padding: 3px;
+}
+.paymentId button svg {
+  width: 12px;
+  height: 12px;
+}
+.method {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 11px;
+  color: #4b5568;
+}
+.brand {
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  width: 20px;
+  height: 14px;
+  border: 1px solid #dde2e9;
+  border-radius: 2px;
+  background: #f2f4f7;
+}
+.visa {
+  background: #2056a0;
+  color: white;
+  border-color: #2056a0;
+}
+.mastercard {
+  background: #26252b;
+  color: #ffb449;
+  border-color: #26252b;
+}
+.amex {
+  background: #2885ae;
+  color: white;
+  border-color: #2885ae;
+}
+.methodName {
+  text-transform: capitalize;
+  font-size: 10px;
+  color: var(--muted);
+}
+.date {
+  cursor: help;
+}

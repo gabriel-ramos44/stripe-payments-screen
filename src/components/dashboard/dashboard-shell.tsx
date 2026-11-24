@@ -1,10 +1,9 @@
 "use client";
 
-import { useState } from "react";
+import { useState, type ReactNode } from "react";
 import {
   Activity,
   ArrowDownUp,
-  ArrowUpRight,
   Bell,
   BookOpen,
   Box,
@@ -19,7 +18,6 @@ import {
   Download,
   Ellipsis,
   ExternalLink,
-  FlaskConical,
   House,
   Layers,
   Menu as MenuIcon,
@@ -125,7 +123,7 @@ function NavigationGroup({
   );
 }
 
-export function DashboardShell() {
+export function DashboardShell({ children }: { children: ReactNode }) {
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [announcementVisible, setAnnouncementVisible] = useState(true);
   return (
@@ -403,30 +401,7 @@ export function DashboardShell() {
               </Button>
             </div>
           </div>
-          <section
-            className={styles.tablePlaceholder}
-            aria-label="Payments table implementation status"
-          >
-            <div className={styles.placeholderIcon}>
-              <CreditCard size={24} />
-            </div>
-            <h2>Your payments, in one place</h2>
-            <p>
-              The dashboard foundation is ready. The payments table and its
-              interactions are the next implementation stage.
-            </p>
-            <span>
-              <FlaskConical size={13} />
-              Local preview · No live transactions
-            </span>
-          </section>
-          <footer className={styles.previewFooter}>
-            <span>Payments screen · Work in progress</span>
-            <span>
-              Built with synthetic data
-              <ArrowUpRight size={12} />
-            </span>
-          </footer>
+          {children}
         </main>
       </div>
     </div>
