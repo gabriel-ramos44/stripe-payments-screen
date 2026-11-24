@@ -2,7 +2,6 @@
 
 import { useEffect, useState, type ReactNode } from "react";
 import Link from "next/link";
-import Image from "next/image";
 import * as Dialog from "@radix-ui/react-dialog";
 import {
   Activity,
@@ -326,12 +325,7 @@ function SidebarContent({ onNavigate }: { onNavigate: () => void }) {
           trigger={
             <Button variant="ghost" className={styles.accountTrigger}>
               <span className={styles.accountLogo} aria-hidden="true">
-                <Image
-                  src="/brand/cramly-reference.png"
-                  width={22}
-                  height={22}
-                  alt=""
-                />
+                ↔
               </span>
               <strong>cramly.ai</strong>
               <ChevronDown />
@@ -340,15 +334,7 @@ function SidebarContent({ onNavigate }: { onNavigate: () => void }) {
         >
           <MenuLabel>Account</MenuLabel>
           <MenuItem disabled>
-            <span className={styles.accountLogo}>
-              <Image
-                src="/brand/cramly-reference.png"
-                width={22}
-                height={22}
-                alt=""
-              />
-            </span>
-            cramly.ai
+            <span className={styles.accountLogo}>↔</span>cramly.ai
             <Check size={14} />
           </MenuItem>
           <MenuSeparator />
