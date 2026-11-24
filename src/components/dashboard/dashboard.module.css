@@ -64,6 +64,49 @@
 .navItem:disabled {
   cursor: default;
 }
+.navItem:not(:disabled) {
+  cursor: pointer;
+}
+.navItem:focus-visible {
+  outline: 3px solid #a2dcf5;
+  outline-offset: -2px;
+  background: var(--surface);
+}
+.expandedChevron {
+  transform: rotate(180deg);
+}
+.sidebarNavigation {
+  flex: 1;
+  min-height: 0;
+  overflow-y: auto;
+  scrollbar-width: thin;
+}
+.submenu {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+.submenuItem {
+  display: block;
+  width: 100%;
+  padding: 6px 10px 6px 36px;
+  border: 0;
+  border-radius: 4px;
+  background: transparent;
+  color: #4b5568;
+  text-align: left;
+  font-size: 13px;
+  cursor: default;
+}
+.submenuItem:hover {
+  background: var(--surface);
+}
+.submenuItem:disabled {
+  cursor: default;
+}
+.mutedSubmenuItem {
+  color: var(--muted);
+}
 .navItem > svg:first-child {
   width: 16px;
   height: 16px;
@@ -81,6 +124,7 @@
   font-weight: 600;
 }
 .developers {
+  flex-shrink: 0;
   margin-top: auto;
   display: flex;
   align-items: center;

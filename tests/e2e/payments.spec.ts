@@ -6,6 +6,34 @@ test.beforeEach(async ({ page }) => {
   await page.goto("/payments");
 });
 
+test("More navigation expands by keyboard and remains usable on short mobile screens", async ({ page }) => {
+  const more = page.getByRole("button", { name: "More", exact: true });
+  await expect(more).toHaveAttribute("aria-expanded", "false");
+  await more.focus();
+  await page.keyboard.press("Enter");
+  await expect(more).toHaveAttribute("aria-expanded", "true");
+  const submenu = page.getByRole("list", { name: "More products" });
+  await expect(submenu.getByRole("button")).toHaveText([
+    "Link", "Profiles", "Connect", "Identity", "Atlas",
+    "Financial Connections", "Climate", "Workflows", "Projects",
+  ]);
+  await page.keyboard.press("Space");
+  await expect(submenu).toBeHidden();
+  await expect(more).toBeFocused();
+  await page.setViewportSize({ width: 390, height: 568 });
+  await page.getByRole("button", { name: "Open navigation" }).click();
+  const drawer = page.getByRole("dialog", { name: "Dashboard navigation" });
+  const mobileMore = drawer.getByRole("button", { name: "More", exact: true });
+  await mobileMore.scrollIntoViewIfNeeded();
+  await mobileMore.click();
+  const projects = drawer.getByRole("button", { name: "Projects", exact: true });
+  await projects.scrollIntoViewIfNeeded();
+  await expect(projects).toBeInViewport();
+  await expect(projects).toBeDisabled();
+  await page.keyboard.press("Escape");
+  await expect(page.getByRole("button", { name: "Open navigation" })).toBeFocused();
+});
+
 test("reference views, row selection and row actions are functional", async ({
   page,
 }) => {

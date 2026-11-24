@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState, type ComponentType, type ReactNode } from "react";
+import { useEffect, useId, useState, type ComponentType, type ReactNode } from "react";
 import Link from "next/link";
 import * as Dialog from "@radix-ui/react-dialog";
 import {
@@ -102,6 +102,8 @@ function NavigationGroup({
             <Icon size={16} aria-hidden="true" />
             <span>{label}</span>
           </Link>
+        ) : label === "More" ? (
+          <MoreNavigation key={label} />
         ) : (
           <Tooltip
             key={label}
@@ -115,6 +117,53 @@ function NavigationGroup({
           </Tooltip>
         ),
       )}
+    </div>
+  );
+}
+
+const moreProducts = [
+  "Link",
+  "Profiles",
+  "Connect",
+  "Identity",
+  "Atlas",
+  "Financial Connections",
+  "Climate",
+  "Workflows",
+  "Projects",
+] as const;
+
+function MoreNavigation() {
+  const [expanded, setExpanded] = useState(false);
+  const submenuId = useId();
+  return (
+    <div>
+      <button
+        type="button"
+        className={styles.navItem}
+        aria-expanded={expanded}
+        aria-controls={submenuId}
+        onClick={() => setExpanded((value) => !value)}
+      >
+        <Ellipsis size={16} aria-hidden="true" />
+        <span>More</span>
+        <ChevronDown size={8} className={expanded ? styles.expandedChevron : undefined} />
+      </button>
+      <ul id={submenuId} hidden={!expanded} className={styles.submenu} aria-label="More products">
+        {moreProducts.map((label) => (
+          <li key={label}>
+            <Tooltip content="Outside the scope of this payments assessment">
+              <button
+                type="button"
+                disabled
+                className={`${styles.submenuItem} ${label === "Climate" ? styles.mutedSubmenuItem : ""}`}
+              >
+                {label}
+              </button>
+            </Tooltip>
+          </li>
+        ))}
+      </ul>
     </div>
   );
 }
@@ -355,7 +404,7 @@ function SidebarContent({ onNavigate }: { onNavigate: () => void }) {
           <X />
         </Button>
       </div>
-      <nav aria-label="Main">
+      <nav aria-label="Main" className={styles.sidebarNavigation}>
         <NavigationGroup
           items={mainNavigation}
           onNavigate={() => onNavigate()}
