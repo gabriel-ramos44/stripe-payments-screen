@@ -4,12 +4,10 @@ import { useEffect, useState, type ComponentType, type ReactNode } from "react";
 import Link from "next/link";
 import * as Dialog from "@radix-ui/react-dialog";
 import {
-  Activity,
   Check,
   ExternalLink,
   Layers,
   Menu as MenuIcon,
-  ShieldCheck,
   Sparkles,
 } from "lucide-react";
 import {
@@ -25,6 +23,7 @@ import {
   CreditCard,
   Ellipsis,
   House,
+  Pin,
   Plus,
   Search,
   Settings,
@@ -58,10 +57,10 @@ const mainNavigation: NavigationItem[] = [
   { label: "Product catalog", icon: Box },
 ];
 const shortcuts: NavigationItem[] = [
-  { label: "Payments analytics", icon: Clock3 },
-  { label: "Reports", icon: ChartNoAxesCombined },
-  { label: "Sigma", icon: Activity },
-  { label: "Radar", icon: ShieldCheck },
+  { label: "Payments analytics", icon: Pin },
+  { label: "Reports", icon: Clock3 },
+  { label: "Sigma", icon: Clock3 },
+  { label: "Radar", icon: Clock3 },
 ];
 const products: NavigationItem[] = [
   { label: "Connect", icon: Layers, expandable: true },
