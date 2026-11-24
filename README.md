@@ -1,40 +1,38 @@
 # Stripe payments screen
 
 A Stripe-inspired payments dashboard built for the Chargeblast front-end assessment
-with Next.js, strict TypeScript, React, CSS Modules and accessible Radix primitives.
-The application uses 500 seeded synthetic payments; no Stripe account or backend is required.
+with Next.js, strict TypeScript, React, CSS Modules and Radix primitives.
+It uses 500 seeded synthetic payments; no Stripe account or backend is required.
+
+**[Live demo on Vercel](https://stripe-payments-screen.vercel.app/payments)**
 
 ![Payments dashboard](tests/visual/payments.spec.ts-snapshots/desktop-win32.png)
 
 ## Run locally
 
-Use Node.js 22.18 or newer (validated with Node.js 24) and npm.
+Use Node.js 22.18 or newer and npm.
 
 ```sh
 npm ci
 npm run dev
 ```
 
-Open http://localhost:3000/payments. Servers bind to loopback by default.
+Open [localhost:3000/payments](http://localhost:3000/payments).
 For a production preview, run `npm run build` followed by `npm start`.
-No environment variables or external fonts are required.
+No environment variables are required.
 
 ## Features
 
-- Required payment fields, currency-aware amounts, four status badges, full-ID copy
-  with error recovery, and hover/focus relative-time tooltips in Brasilia time.
-- Search by payment ID, email or last four digits; combine calendar date ranges,
-  multi-select statuses/methods, amount bounds and currency filters.
-- Row and page selection with a mixed checkbox state, inline status badges, refund/decline
-  columns, and accessible row-action menus.
-- Six reference summary views, including disputed and uncaptured synthetic payments.
-- Stable date/amount/status sorting and 25/50/100-row pagination, including empty
-  states, page resets and disabled boundary navigation.
-- Responsive sidebar/top bar, expandable More navigation, and a mobile drawer with focus trapping and restoration.
-- Payment details with timeline, metadata, direct navigation and unknown-ID handling.
-- Shareable filter/sort/page state, including refresh and browser back/forward.
-- Column resizing and drag reordering, with keyboard, slider and button alternatives.
-- CSV export of all filtered/sorted rows across pages in the selected column order.
+- Search by payment ID, email or last four digits, with combined date, amount,
+  currency, status and payment-method filters.
+- Six summary views, inline status badges, refund/decline details, row selection
+  and payment-action menus.
+- Date, amount and status sorting; 25/50/100-row pagination and empty states.
+- Payment details with timeline, metadata, full-ID copy and relative-time tooltips.
+- Shareable filter, sort and pagination state with browser history support.
+- Resizable and reorderable columns with keyboard alternatives.
+- CSV export of all filtered and sorted payments across pages.
+- Responsive layout, expandable More navigation and a mobile drawer with focus management.
 
 ## Verify
 
@@ -43,79 +41,53 @@ npm run check
 npm run test:e2e
 ```
 
-`check` runs ESLint, strict types, seeded-data checks, query/state/URL/CSV checks and
-an optimized production build. Playwright builds the app and starts its own local
-production server on port 3200. Keep that port free; installed Google Chrome is required.
-The browser suite includes functional journeys, automated accessibility scans and
-reviewed screenshots. Open the local report with `npx playwright show-report`.
+`check` runs lint, TypeScript, data/query checks and a production build.
+Playwright covers functional journeys, automated accessibility checks and visual
+regressions. It requires installed Google Chrome and port 3200 to be available.
+Open the local report with `npx playwright show-report`.
 
-Screenshots use Windows/Chrome baselines at fixed viewport sizes and a fixed clock.
-To deliberately regenerate baselines after a reviewed visual change:
+Visual baselines use Windows/Chrome, fixed viewports and a fixed clock. To update
+them after an intentional visual change:
 
 ```sh
 npm run test:e2e -- --update-snapshots
 ```
 
-Inspect changed images before accepting them, then run the suite again without
-updates. Other operating systems/browser versions can render fonts differently.
-Reports, downloads and failure traces are ignored by Git and are never uploaded.
+Review changed screenshots before accepting them. Other browser or operating-system
+versions may render fonts differently.
 
 ## Architecture
 
-- `src/app/payments/`: server-rendered list and dynamic details route.
-- `src/features/payments/data.ts`: one server-side dataset/timestamp boundary.
-- `types.ts`, `mock-data.ts`: discriminated methods, integer minor-unit amounts and
-  deterministic, realistic synthetic data with reserved example.com email addresses.
-- `query.ts`, `state.ts`, `url-state.ts`: pure filtering, sorting, pagination,
-  state transitions and validated URL serialization.
-- `columns.ts`, `csv.ts`: column constraints and escaped CSV serialization.
-- `src/features/payments/components/`: focused table, filter, pagination and column controls.
-- `src/components/`: dashboard shell and shared Radix-based UI components.
-- `scripts/`, `tests/`: data/query verification, browser journeys and visual baselines.
+- `src/app/payments/`: server-rendered list and payment-detail routes.
+- `src/features/payments/`: typed mock data, filtering, sorting, URL state, CSV export
+  and table components.
+- `src/components/`: dashboard shell, shared Radix controls and extracted Stripe icons.
+- `scripts/` and `tests/`: data/query checks, browser tests and visual baselines.
 
-A native semantic table and a small typed reducer cover this dataset without a
-large table/state dependency. Radix provides keyboard/focus behavior for layered
-controls; extracted Stripe SVGs cover matching dashboard icons and Lucide supplies the rest. CSS controls visual fidelity.
+The table uses semantic HTML and a typed reducer. Radix handles layered controls;
+extracted Stripe SVGs and Lucide supply the icons.
 
 ## Decisions and limits
 
-Icon fidelity: some icons are approximations rather than pixel-perfect matches. No Figma or original design assets were provided, and our accessible Stripe panel does not show every icon in the reference. Extracted SVGs are used wherever a matching source is available.
+Some icons are approximations rather than pixel-perfect matches: no Figma or original
+design assets were provided, and our accessible Stripe panel does not show every icon
+in the reference. Extracted SVGs are used wherever a matching source is available.
 
-- Written requirements take priority over conflicting reference details: four
-  required statuses, full payment IDs and 25/50/100 page sizes. The creation timestamp
-  uses the reference label Date. Customer absorbs extra desktop width while other
-  columns retain their widths; narrow screens scroll the table horizontally.
-- The desktop table fills the remaining viewport height and scrolls internally;
-  mobile keeps natural page scrolling. Accessibility labels stay inside the table
-  scroller so off-screen rows cannot create blank document overflow.
-- Cross-currency amount sorting/filtering compares numeric major units without FX
-  conversion. A currency filter lets reviewers compare one currency at a time.
-- Calendar presets include today in America/Sao_Paulo; custom endpoints are inclusive.
-  Relative tooltips refresh on opening. CSV timestamps use explicitly labeled UTC.
-- Each view keeps one dataset anchor; shareable URLs carry it so reload/details
-  preserve dates. `PAYMENTS_MOCK_ANCHOR` can fix the server clock for local QA.
-- URL values are validated and unknown values ignored. Column layouts are in-memory
-  and reset on reload; filter/sort/pagination state is shareable.
-- CSV includes full IDs and follows the displayed column order. All values are
-  quoted, quotes/newlines are escaped and formula-like text is neutralized.
-- Unrelated navigation, payment creation and analytics actions are outside the demo.
-- Original font and undocumented Stripe interactions could not be verified against
-  a live dashboard. Exact pixel equality and full WCAG compliance are not claimed.
-- Automated checks run in Chrome; Firefox/Safari and a manual screen-reader audit
-  have not been completed. Clipboard failure/success branches use controlled tests.
+- The PDF guides the layout; written requirements determine the four payment statuses
+  and 25/50/100 page sizes. The creation timestamp is labeled Date in the table.
+- Desktop table scrolling stays within the available viewport; mobile retains natural
+  page scrolling. Column layouts reset on reload.
+- Cross-currency sorting and amount filters compare numeric amounts without FX conversion.
+- Calendar filters and displayed dates use America/Sao_Paulo. CSV timestamps use UTC.
+  Shareable URLs preserve the dataset timestamp; `PAYMENTS_MOCK_ANCHOR` can fix it for QA.
+- CSV values are escaped and formula-like text is neutralized.
+- Unrelated product destinations, payment creation and analytics are outside this demo.
+- Automated accessibility checks run in Chrome; a manual screen-reader audit and
+  Firefox/Safari testing have not been completed.
 
-ESLint 9 is pinned because the current Next.js preset's React/import/accessibility
-plugins declare compatibility through that major. npm marks it unsupported upstream;
-upgrade once all preset plugins support ESLint 10.
-
-## Review materials
+## Further documentation
 
 - [Requirements checklist](docs/requirements.md)
 - [Reference analysis](docs/reference-analysis.md)
 - [Implementation decisions](docs/implementation-decisions.md)
 - [Functional and visual QA](docs/qa-report.md)
-- [Delivery checklist and submission draft](docs/delivery-checklist.md)
-
-The project is prepared locally. Hosting, repository publication/access verification
-and submission remain separate steps. Original assessment screenshots and real
-customer data are not included in the committed visual baselines.
