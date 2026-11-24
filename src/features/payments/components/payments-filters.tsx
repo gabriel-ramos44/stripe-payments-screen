@@ -83,11 +83,7 @@ export function PaymentsFilters({
               </Button>
             }
           >
-            <DateFilter
-              key={`${filters.datePreset}-${filters.startDate}-${filters.endDate}`}
-              filters={filters}
-              onChange={onChange}
-            />
+            <DateFilter filters={filters} onChange={onChange} />
           </Popover>
           <Popover
             label="Amount filter"
@@ -104,11 +100,7 @@ export function PaymentsFilters({
               </Button>
             }
           >
-            <AmountFilter
-              key={`${filters.minAmount}-${filters.maxAmount}`}
-              filters={filters}
-              onChange={onChange}
-            />
+            <AmountFilter filters={filters} onChange={onChange} />
           </Popover>
           <Popover
             label="Currency filter"
@@ -280,6 +272,8 @@ function DateFilter({
           <label>
             Start date
             <Input
+              aria-invalid={Boolean(error)}
+              aria-describedby={error ? `${id}-error` : undefined}
               type="date"
               value={startDate}
               onChange={(event) => setStartDate(event.target.value)}
@@ -289,6 +283,8 @@ function DateFilter({
           <label>
             End date
             <Input
+              aria-invalid={Boolean(error)}
+              aria-describedby={error ? `${id}-error` : undefined}
               type="date"
               value={endDate}
               onChange={(event) => setEndDate(event.target.value)}
@@ -301,7 +297,7 @@ function DateFilter({
         Calendar dates in Brasília time. Presets include today.
       </p>
       {error && (
-        <p role="alert" className={styles.error}>
+        <p id={`${id}-error`} role="alert" className={styles.error}>
           {error}
         </p>
       )}
@@ -320,6 +316,7 @@ function AmountFilter({
 }) {
   const [minAmount, setMinAmount] = useState(filters.minAmount);
   const [maxAmount, setMaxAmount] = useState(filters.maxAmount);
+  const id = useId();
   const [error, setError] = useState<string | null>(null);
   return (
     <form
@@ -336,6 +333,8 @@ function AmountFilter({
       <label>
         Minimum amount
         <Input
+          aria-invalid={Boolean(error)}
+          aria-describedby={error ? `${id}-error` : undefined}
           inputMode="decimal"
           value={minAmount}
           onChange={(event) => setMinAmount(event.target.value)}
@@ -345,6 +344,8 @@ function AmountFilter({
       <label>
         Maximum amount
         <Input
+          aria-invalid={Boolean(error)}
+          aria-describedby={error ? `${id}-error` : undefined}
           inputMode="decimal"
           value={maxAmount}
           onChange={(event) => setMaxAmount(event.target.value)}
@@ -356,7 +357,7 @@ function AmountFilter({
         Currency to compare one currency.
       </p>
       {error && (
-        <p role="alert" className={styles.error}>
+        <p id={`${id}-error`} role="alert" className={styles.error}>
           {error}
         </p>
       )}

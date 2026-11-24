@@ -156,6 +156,16 @@ export function Popover({
           sideOffset={7}
           align="start"
         >
+          <PopoverPrimitive.Close asChild>
+            <Button
+              variant="ghost"
+              iconOnly
+              className={styles.closePopover}
+              aria-label={`Close ${label.toLowerCase()}`}
+            >
+              <X aria-hidden="true" />
+            </Button>
+          </PopoverPrimitive.Close>
           {children}
         </PopoverPrimitive.Content>
       </PopoverPrimitive.Portal>

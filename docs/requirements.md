@@ -14,7 +14,11 @@ from our proposed engineering choices.
 - [x] Task 5: design tokens, styled buttons/inputs/badges and Radix menu/popover/tooltip primitives.
 - [x] Task 6: responsive dashboard shell with account menu, top bar, tabs, announcement and status cards.
 - [x] Task 7: 500 seeded synthetic payment records, typed model and integrity verification.
-- [ ] Tasks 8 onward: table, search/filters, sorting/pagination, full quality pass and optional delivery.
+- [x] Task 8: required table fields, currency/date formatting, ID copying and relative-time tooltips.
+- [x] Task 9: composable search, date/status/method/amount filters, currency refinement and empty/reset states.
+- [x] Task 10: date/amount/status sorting and 25/50/100 pagination, reset/clamp behavior.
+- [x] Task 11: focus-trapped mobile navigation, keyboard-accessible controls, validation feedback and contained overflow.
+- [ ] Tasks 12 onward: dedicated final QA/visual comparison, optional scope and delivery.
 
 ## Required table
 

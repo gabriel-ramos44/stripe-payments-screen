@@ -1,7 +1,7 @@
 # Mock payment data
 
-Task 7 supplies an in-memory service rather than a static JSON file. It is not wired
-to the task-6 placeholder; the table is task 8.
+Task 7 supplies an in-memory service rather than a static JSON file. The dynamic
+payments page creates the dataset once and passes it to the interactive table.
 
 ## Contract
 

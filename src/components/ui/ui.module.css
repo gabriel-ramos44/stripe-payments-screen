@@ -136,3 +136,11 @@
 .popover {
   padding: 16px;
 }
+.closePopover {
+  position: absolute;
+  right: 5px;
+  top: 5px;
+}
+.popover {
+  padding-top: 32px;
+}

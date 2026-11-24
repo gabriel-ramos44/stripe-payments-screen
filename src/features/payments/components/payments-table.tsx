@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import {
   ArrowDown,
   ArrowUp,
@@ -30,6 +30,14 @@ export function PaymentsTable({
 }) {
   const [copiedId, setCopiedId] = useState<string | null>(null);
   const [notice, setNotice] = useState("");
+  useEffect(() => {
+    if (!notice) return;
+    const timer = window.setTimeout(() => {
+      setNotice("");
+      setCopiedId(null);
+    }, 6000);
+    return () => window.clearTimeout(timer);
+  }, [notice]);
   async function copyId(id: string) {
     try {
       await navigator.clipboard.writeText(id);
@@ -37,12 +45,12 @@ export function PaymentsTable({
       setNotice(`Copied payment ID ${id}`);
     } catch {
       setCopiedId(null);
-      setNotice("Could not copy payment ID. Select and copy the ID manually.");
+      setNotice(`Could not copy. Select this payment ID manually: ${id}`);
     }
   }
   return (
     <>
-      <p role="status" className="sr-only">
+      <p role="status" className={notice ? styles.copyNotice : "sr-only"}>
         {notice}
       </p>
       <div
@@ -116,7 +124,11 @@ export function PaymentsTable({
                 </td>
                 <td>
                   <div className={styles.paymentId}>
-                    <span title={payment.id}>
+                    <span
+                      title={payment.id}
+                      aria-label={payment.id}
+                      className={styles.idText}
+                    >
                       {payment.id.slice(0, 12)}…{payment.id.slice(-4)}
                     </span>
                     <Button
@@ -131,7 +143,6 @@ export function PaymentsTable({
                         <Copy aria-hidden="true" />
                       )}
                     </Button>
-                    <span className="sr-only">{payment.id}</span>
                   </div>
                 </td>
               </tr>

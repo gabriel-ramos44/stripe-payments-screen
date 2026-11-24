@@ -56,9 +56,6 @@ export function PaymentsWorkspace({
         onChange={setFilters}
         onReset={reset}
       />
-      <p className={styles.results} role="status">
-        {filtered.length} matching payments
-      </p>
       {filtered.length ? (
         <PaymentsTable
           payments={pagination.rows}
