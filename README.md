@@ -23,6 +23,9 @@ No environment variables or external fonts are required.
 
 - Required payment fields, currency-aware amounts, four status badges, full-ID copy
   with error recovery, and hover/focus relative-time tooltips in Brasilia time.
+- Reference-order view cards, inline amount/status cells, page selection and row
+  menus. Disputed and Uncaptured are separate mock-data views; Pending stays in
+  the Status filter. Status sorting is in the Amount header's sorting menu.
 - Search by payment ID, email or last four digits; combine calendar date ranges,
   multi-select statuses/methods, amount bounds and currency filters.
 - Stable date/amount/status sorting and 25/50/100-row pagination, including empty
@@ -77,7 +80,9 @@ controls; Lucide supplies general UI icons. CSS controls visual fidelity.
 ## Decisions and limits
 
 - Written requirements take priority over conflicting reference details: four
-  required statuses, required Payment ID/Created columns and 25/50/100 page sizes.
+  required payment statuses and 25/50/100 page sizes. The default table follows the
+  reference order, with status inside Amount, Date representing the creation time,
+  and Payment ID available further right through horizontal scrolling.
 - Cross-currency amount sorting/filtering compares numeric major units without FX
   conversion. A currency filter lets reviewers compare one currency at a time.
 - Calendar presets include today in America/Sao_Paulo; custom endpoints are inclusive.
@@ -105,6 +110,7 @@ upgrade once all preset plugins support ESLint 10.
 - [Implementation decisions](docs/implementation-decisions.md)
 - [Functional and visual QA](docs/qa-report.md)
 - [Delivery checklist and submission draft](docs/delivery-checklist.md)
+- [Logo, icon and font sources](docs/assets.md)
 
 The project is prepared locally. Hosting, repository publication/access verification
 and submission remain separate steps. Original assessment screenshots and real
