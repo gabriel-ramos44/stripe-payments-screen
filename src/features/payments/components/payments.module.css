@@ -216,6 +216,18 @@
   gap: 12px;
   width: min(290px, calc(100vw - 70px));
 }
+.exportNotice {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  margin: 8px 0;
+  padding: 6px 10px;
+  background: var(--accent-soft);
+  color: #454077;
+  font-size: 12px;
+  border-radius: 5px;
+}
 .columnSetting {
   display: grid;
   grid-template-columns: 1fr auto;

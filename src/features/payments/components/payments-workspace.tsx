@@ -20,6 +20,7 @@ import { PaymentsTable } from "./payments-table";
 import { PaymentsFilters } from "./payments-filters";
 import { PaymentsPagination } from "./payments-pagination";
 import { ColumnSettings } from "./column-settings";
+import { paymentsToCsv } from "../csv";
 import {
   defaultColumnOrder,
   reorderColumns,
@@ -43,6 +44,7 @@ export function PaymentsWorkspace({
   const [columnOrder, setColumnOrder] = useState(defaultColumnOrder);
   const [columnWidths, setColumnWidths] = useState<ColumnWidths>({});
   const [columnNotice, setColumnNotice] = useState("");
+  const [exportNotice, setExportNotice] = useState("");
   const moveColumn = (source: ColumnId, target: ColumnId) => {
     setColumnOrder((order) => reorderColumns(order, source, target));
     setColumnNotice(`Moved ${source} column to the ${target} position.`);
@@ -75,6 +77,27 @@ export function PaymentsWorkspace({
   );
   const sorted = useMemo(() => sortPayments(filtered, sort), [filtered, sort]);
   const pagination = paginatePayments(sorted, page, pageSize);
+  function exportPayments() {
+    try {
+      const url = URL.createObjectURL(
+        new Blob([paymentsToCsv(sorted, columnOrder)], {
+          type: "text/csv;charset=utf-8",
+        }),
+      );
+      const link = document.createElement("a");
+      link.href = url;
+      link.download = `payments-${referenceTime.slice(0, 10)}.csv`;
+      document.body.append(link);
+      link.click();
+      link.remove();
+      window.setTimeout(() => URL.revokeObjectURL(url), 1000);
+      setExportNotice(
+        `Exported ${sorted.length} filtered payments across all pages.`,
+      );
+    } catch {
+      setExportNotice("Could not export payments. Please try again.");
+    }
+  }
   return (
     <DashboardShell
       search={
@@ -94,6 +117,8 @@ export function PaymentsWorkspace({
         filters={filters}
         onChange={setFilters}
         onReset={reset}
+        onExport={exportPayments}
+        exportCount={sorted.length}
         columnControls={
           <ColumnSettings
             order={columnOrder}
@@ -111,6 +136,14 @@ export function PaymentsWorkspace({
       <p className="sr-only" role="status">
         {columnNotice}
       </p>
+      {exportNotice && (
+        <p role="status" className={styles.exportNotice}>
+          {exportNotice}
+          <Button variant="ghost" onClick={() => setExportNotice("")}>
+            Dismiss
+          </Button>
+        </p>
+      )}
       {filtered.length ? (
         <PaymentsTable
           payments={pagination.rows}

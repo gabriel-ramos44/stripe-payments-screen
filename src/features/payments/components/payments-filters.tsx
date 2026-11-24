@@ -37,11 +37,15 @@ export function PaymentsFilters({
   onChange,
   onReset,
   columnControls,
+  onExport,
+  exportCount,
 }: {
   filters: PaymentFilters;
   onChange: (filters: PaymentFilters) => void;
   onReset: () => void;
   columnControls: ReactNode;
+  onExport: () => void;
+  exportCount: number;
 }) {
   return (
     <>
@@ -171,7 +175,11 @@ export function PaymentsFilters({
           </Button>
         </div>
         <div className={styles.tableActions}>
-          <Button disabled title="Optional export is not implemented">
+          <Button
+            disabled={exportCount === 0}
+            onClick={onExport}
+            title={`Export all ${exportCount} filtered results across pages`}
+          >
             <Download />
             Export
           </Button>

@@ -1,5 +1,28 @@
 import { test, expect } from "@playwright/test";
 import AxeBuilder from "@axe-core/playwright";
+import { readFile } from "node:fs/promises";
+
+test("CSV exports every filtered row in current column order", async ({
+  page,
+}) => {
+  await page.goto("/payments");
+  await page.getByRole("button", { name: "Succeeded", exact: true }).click();
+  const downloadEvent = page.waitForEvent("download");
+  await page.getByRole("button", { name: "Export", exact: true }).click();
+  const download = await downloadEvent;
+  expect(download.suggestedFilename()).toBe("payments-2026-11-24.csv");
+  const csv = await readFile((await download.path())!, "utf8");
+  const lines = csv.trim().split("\r\n");
+  expect(lines).toHaveLength(279);
+  expect(lines[0]).toContain('"Created (UTC)"');
+  expect(lines.slice(1).every((line) => line.includes('"Succeeded"'))).toBe(
+    true,
+  );
+  await page.getByRole("searchbox").fill("no-matching-payment");
+  await expect(
+    page.getByRole("button", { name: "Export", exact: true }),
+  ).toBeDisabled();
+});
 
 test("columns reorder by keyboard and drag, resize and reset accessibly", async ({
   page,

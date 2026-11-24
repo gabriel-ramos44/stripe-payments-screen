@@ -1,4 +1,5 @@
 import assert from "node:assert/strict";
+import { escapeCsvCell, paymentsToCsv } from "../src/features/payments/csv.ts";
 import {
   defaultColumnOrder,
   reorderColumns,
@@ -202,6 +203,19 @@ assert.equal(paginatePayments(payments.slice(0, 26), 99, 25).currentPage, 2);
 assert.equal(paginatePayments([], 20, 25).first, 0);
 assert.equal(paginatePayments([], 20, 25).last, 0);
 const state = { ...initialPaymentsState(), page: 10 };
+assert.equal(escapeCsvCell("=SUM(1,2)"), '"\'=SUM(1,2)"');
+assert.equal(escapeCsvCell('quoted "text"'), '"quoted ""text"""');
+assert.ok(
+  paymentsToCsv(
+    [{ ...base, description: '=HYPERLINK("bad")' }],
+    ["description", "id"],
+  ).includes('"\'=HYPERLINK(""bad"")"'),
+);
+assert.equal(
+  paymentsToCsv(payments.slice(0, 50), defaultColumnOrder()).split("\r\n")
+    .length,
+  52,
+);
 assert.equal(resizeColumn("amount", 5), 115);
 assert.equal(resizeColumn("amount", 900), 600);
 assert.deepEqual(
