@@ -17,16 +17,16 @@ Status: planning baseline for later tasks. Only the project foundation is built.
 
 ## Reference conflicts
 
-| Issue | Proposed decision |
-| --- | --- |
-| Pagination differs | Default 25; offer 25/50/100; show actual local record counts |
-| Required columns absent from screenshot | Show Payment ID and Created alongside Customer, Amount, Status and Payment method; use reference styling and preserve density |
-| Screenshot uses Date | Required-field label defaults to Created; document this intentional difference; seek reviewer clarification if available |
-| Extra statuses | Required four first; do not expose decorative status controls that cannot work |
-| Screenshot summary cards include extra states | Add a coherent extended status model only in a later refinement; avoid mapping Pending to Uncaptured without evidence |
-| Extra table fields | Add only after required fields pass; horizontal scrolling is acceptable |
-| Extra visible actions | Implement later if included; avoid dead controls or misleading actions |
-| Sidebar optional | Include shell early for proportions; full unrelated destination pages are outside scope |
+| Issue                                         | Proposed decision                                                                                                             |
+| --------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------- |
+| Pagination differs                            | Default 25; offer 25/50/100; show actual local record counts                                                                  |
+| Required columns absent from screenshot       | Show Payment ID and Created alongside Customer, Amount, Status and Payment method; use reference styling and preserve density |
+| Screenshot uses Date                          | Required-field label defaults to Created; document this intentional difference; seek reviewer clarification if available      |
+| Extra statuses                                | Required four first; do not expose decorative status controls that cannot work                                                |
+| Screenshot summary cards include extra states | Add a coherent extended status model only in a later refinement; avoid mapping Pending to Uncaptured without evidence         |
+| Extra table fields                            | Add only after required fields pass; horizontal scrolling is acceptable                                                       |
+| Extra visible actions                         | Implement later if included; avoid dead controls or misleading actions                                                        |
+| Sidebar optional                              | Include shell early for proportions; full unrelated destination pages are outside scope                                       |
 
 Written functional requirements take precedence when incompatible with the image.
 Preserve exact reference labels elsewhere. This is our resolution, not a statement

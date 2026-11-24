@@ -32,20 +32,20 @@ browser zoom, original viewport, font family or exact CSS values.
 
 ## Measurement inventory
 
-| Element | Render-space estimate | Initial CSS hypothesis / confidence |
-| --- | --- | --- |
-| Sidebar | x=130–259; width ~129 (~16% of image) | 200–216px at a wider desktop viewport; medium |
-| Main content | x=282–936; left inset ~23 | 32px content inset; medium |
-| Top bar | y=137–156 | Compact controls; ~40–48px overall region; low |
-| Heading | y=174–187 | ~24px, semibold; medium |
-| Tab baseline | y~212 | ~13–14px labels, fine active underline; medium |
-| Announcement | y=226–246 | ~30–32px height; medium |
-| Summary cards | y=255–280 | ~38–40px height, ~6px radius; medium |
-| Filter toolbar | y=289–305 | Small pill/button controls; low |
-| Table header | y=311–331 | ~28–32px height; medium |
-| Data row | ~20–21px rendered | ~30–32px CSS starting point; medium |
-| Body typography | ~7–8px rendered | ~12–13px CSS starting point; low |
-| Separators | Thin pale gray lines | 1px borders; high for appearance, not sampled color |
+| Element         | Render-space estimate                 | Initial CSS hypothesis / confidence                 |
+| --------------- | ------------------------------------- | --------------------------------------------------- |
+| Sidebar         | x=130–259; width ~129 (~16% of image) | 200–216px at a wider desktop viewport; medium       |
+| Main content    | x=282–936; left inset ~23             | 32px content inset; medium                          |
+| Top bar         | y=137–156                             | Compact controls; ~40–48px overall region; low      |
+| Heading         | y=174–187                             | ~24px, semibold; medium                             |
+| Tab baseline    | y~212                                 | ~13–14px labels, fine active underline; medium      |
+| Announcement    | y=226–246                             | ~30–32px height; medium                             |
+| Summary cards   | y=255–280                             | ~38–40px height, ~6px radius; medium                |
+| Filter toolbar  | y=289–305                             | Small pill/button controls; low                     |
+| Table header    | y=311–331                             | ~28–32px height; medium                             |
+| Data row        | ~20–21px rendered                     | ~30–32px CSS starting point; medium                 |
+| Body typography | ~7–8px rendered                       | ~12–13px CSS starting point; low                    |
+| Separators      | Thin pale gray lines                  | 1px borders; high for appearance, not sampled color |
 
 These CSS hypotheses assume roughly 1.5× enlargement of the dashboard image.
 They are starting points to validate visually, not measured original values.
