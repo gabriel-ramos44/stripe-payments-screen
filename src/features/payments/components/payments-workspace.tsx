@@ -104,8 +104,8 @@ export function PaymentsWorkspace({
         <Input
           type="search"
           maxLength={200}
-          aria-label="Search payments by ID, email or last 4 digits"
-          placeholder="Search by ID, email or last 4 digits"
+          aria-label="Search"
+          placeholder="Search"
           value={filters.search}
           onChange={(event) =>
             setFilters({ ...filters, search: event.target.value })
