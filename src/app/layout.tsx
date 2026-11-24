@@ -3,9 +3,12 @@ import type { ReactNode } from "react";
 import "./globals.css";
 
 export const metadata: Metadata = {
-  title: "Payments assessment | Local development",
+  title: {
+    default: "Payments | Chargeblast assessment",
+    template: "%s | Chargeblast assessment",
+  },
   description:
-    "Local foundation for the Chargeblast payments screen assessment.",
+    "Search, filter and review synthetic payments in the Chargeblast front-end assessment.",
   robots: { index: false, follow: false },
 };
 

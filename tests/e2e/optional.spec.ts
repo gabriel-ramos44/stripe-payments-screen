@@ -7,6 +7,11 @@ test("CSV exports every filtered row in current column order", async ({
 }) => {
   await page.goto("/payments");
   await page.getByRole("button", { name: "Succeeded", exact: true }).click();
+  await page.getByRole("button", { name: "Edit columns", exact: true }).click();
+  await page
+    .getByRole("button", { name: "Move Amount right", exact: true })
+    .click();
+  await page.keyboard.press("Escape");
   const downloadEvent = page.waitForEvent("download");
   await page.getByRole("button", { name: "Export", exact: true }).click();
   const download = await downloadEvent;
@@ -15,6 +20,7 @@ test("CSV exports every filtered row in current column order", async ({
   const lines = csv.trim().split("\r\n");
   expect(lines).toHaveLength(279);
   expect(lines[0]).toContain('"Created (UTC)"');
+  expect(lines[0]).toMatch(/^"Status","Amount"/);
   expect(lines.slice(1).every((line) => line.includes('"Succeeded"'))).toBe(
     true,
   );
@@ -66,9 +72,29 @@ test("columns reorder by keyboard and drag, resize and reset accessibly", async 
   const separator = page.getByRole("separator", {
     name: "Resize Amount column",
   });
+  const header = page.locator("th[data-column='amount']");
+  const before = (await header.boundingBox())!;
+  const handle = (await separator.boundingBox())!;
+  await page.mouse.move(handle.x + 2, handle.y + 8);
+  await page.mouse.down();
+  await page.mouse.move(handle.x + 42, handle.y + 8);
+  await page.mouse.up();
+  await expect(header).toHaveCSS("width", `${Math.round(before.width + 40)}px`);
   await separator.focus();
   await page.keyboard.press("ArrowRight");
   await expect(separator).toHaveAttribute("aria-valuenow", /\d+/);
+  await page.setViewportSize({ width: 390, height: 568 });
+  await page.getByRole("button", { name: "Edit columns", exact: true }).click();
+  const popup = page.getByRole("dialog", { name: "Edit columns" });
+  const bounds = (await popup.boundingBox())!;
+  expect(bounds.y).toBeGreaterThanOrEqual(0);
+  expect(bounds.y + bounds.height).toBeLessThanOrEqual(568);
+  await popup
+    .getByRole("button", { name: "Reset columns" })
+    .scrollIntoViewIfNeeded();
+  await expect(
+    popup.getByRole("button", { name: "Reset columns" }),
+  ).toBeVisible();
 });
 
 test("shareable filters survive refresh, history and payment detail navigation", async ({
@@ -119,6 +145,19 @@ test("payment details support direct access, metadata, return navigation and unk
   ).toBeVisible();
   await expect(page.getByRole("heading", { name: "Timeline" })).toBeVisible();
   await expect(page.getByRole("heading", { name: "Metadata" })).toBeVisible();
+  expect(
+    (
+      await new AxeBuilder({ page })
+        .withTags(["wcag2a", "wcag2aa", "wcag21aa"])
+        .analyze()
+    ).violations,
+  ).toEqual([]);
+  await page.setViewportSize({ width: 390, height: 844 });
+  expect(
+    await page.evaluate(
+      () => document.documentElement.scrollWidth <= innerWidth,
+    ),
+  ).toBe(true);
   await page.reload();
   await expect(
     page.getByText("Payment created", { exact: true }),

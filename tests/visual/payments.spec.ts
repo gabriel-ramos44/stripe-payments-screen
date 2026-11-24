@@ -1,6 +1,21 @@
 import { expect, test } from "@playwright/test";
 
 test.use({ viewport: { width: 1365, height: 1045 } });
+test("column settings and payment details", async ({ page }) => {
+  await page.getByRole("button", { name: "Edit columns", exact: true }).click();
+  await expect(page).toHaveScreenshot("column-settings.png", {
+    animations: "disabled",
+  });
+  await page.keyboard.press("Escape");
+  await page
+    .getByRole("link", { name: /^View payment/ })
+    .first()
+    .click();
+  await expect(page.getByRole("heading", { name: "Timeline" })).toBeVisible();
+  await expect(page).toHaveScreenshot("payment-details.png", {
+    animations: "disabled",
+  });
+});
 test.beforeEach(async ({ page }) => {
   await page.clock.setFixedTime(new Date("2026-11-24T15:00:00.000Z"));
   await page.goto("/payments");

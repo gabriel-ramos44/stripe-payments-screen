@@ -1,4 +1,5 @@
 import Link from "next/link";
+import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import {
   ArrowLeft,
@@ -13,6 +14,7 @@ import { StatusBadge } from "@/components/ui/primitives";
 import { getPaymentsData } from "@/features/payments/data";
 import { formatAmount, formatCreated } from "@/features/payments/format";
 import styles from "@/features/payments/components/details.module.css";
+export const metadata: Metadata = { title: "Payment details" };
 
 export default async function PaymentDetailsPage({
   params,

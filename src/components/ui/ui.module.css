@@ -143,4 +143,9 @@
 }
 .popover {
   padding-top: 32px;
+  max-height: min(
+    calc(100dvh - 24px),
+    var(--radix-popover-content-available-height, 100dvh)
+  );
+  overflow-y: auto;
 }

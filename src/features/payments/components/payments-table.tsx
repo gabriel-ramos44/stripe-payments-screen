@@ -91,6 +91,9 @@ export function PaymentsTable({
               : undefined
           }
         >
+          <caption className="sr-only">
+            Payments. Created dates are displayed in Brasília time.
+          </caption>
           {Object.keys(columnWidths).length > 0 && (
             <colgroup>
               {columnOrder.map((id) => (
@@ -103,9 +106,6 @@ export function PaymentsTable({
               ))}
             </colgroup>
           )}
-          <caption className="sr-only">
-            Payments. Created dates are displayed in Brasília time.
-          </caption>
           <thead>
             <tr>
               {columnOrder.map((id) => (
