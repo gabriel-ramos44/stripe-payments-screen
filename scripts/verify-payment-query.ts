@@ -1,4 +1,8 @@
 import assert from "node:assert/strict";
+import {
+  parsePaymentsUrl,
+  serializePaymentsUrl,
+} from "../src/features/payments/url-state.ts";
 import { createMockPayments } from "../src/features/payments/mock-data.ts";
 import {
   emptyFilters,
@@ -193,6 +197,30 @@ assert.equal(paginatePayments(payments.slice(0, 26), 99, 25).currentPage, 2);
 assert.equal(paginatePayments([], 20, 25).first, 0);
 assert.equal(paginatePayments([], 20, 25).last, 0);
 const state = { ...initialPaymentsState(), page: 10 };
+const roundtrip: ReturnType<typeof initialPaymentsState> = {
+  ...initialPaymentsState(),
+  filters: {
+    ...emptyFilters(),
+    search: "avery@example.com",
+    statuses: ["succeeded", "failed"],
+    methods: ["card"],
+    minAmount: ".5",
+  },
+  page: 3,
+  pageSize: 50 as const,
+};
+assert.deepEqual(
+  parsePaymentsUrl(
+    new URLSearchParams(serializePaymentsUrl(roundtrip, reference)),
+  ),
+  roundtrip,
+);
+const invalidUrl = parsePaymentsUrl(
+  new URLSearchParams(
+    "status=bad&size=123&page=-1&date=custom&from=bad&min=-1",
+  ),
+);
+assert.deepEqual(invalidUrl, initialPaymentsState());
 assert.equal(
   paymentsReducer(state, { type: "filters", filters: emptyFilters() }).page,
   1,

@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo, useReducer } from "react";
+import { useEffect, useMemo, useReducer } from "react";
 import { DashboardShell } from "@/components/dashboard/dashboard-shell";
 import { Input, Button } from "@/components/ui/primitives";
 import type { Payment } from "../types";
@@ -10,7 +10,12 @@ import {
   paginatePayments,
   type PaymentFilters,
 } from "../query";
-import { initialPaymentsState, paymentsReducer } from "../state";
+import {
+  paymentsReducer,
+  type PaymentsState,
+  type PaymentsAction,
+} from "../state";
+import { parsePaymentsUrl, serializePaymentsUrl } from "../url-state";
 import { PaymentsTable } from "./payments-table";
 import { PaymentsFilters } from "./payments-filters";
 import { PaymentsPagination } from "./payments-pagination";
@@ -19,15 +24,31 @@ import styles from "./payments.module.css";
 export function PaymentsWorkspace({
   payments,
   referenceTime,
+  initialState,
 }: {
   payments: Payment[];
   referenceTime: string;
+  initialState: PaymentsState;
 }) {
-  const [{ filters, sort, page, pageSize }, dispatch] = useReducer(
-    paymentsReducer,
-    undefined,
-    initialPaymentsState,
-  );
+  const [state, rawDispatch] = useReducer(paymentsReducer, initialState);
+  const { filters, sort, page, pageSize } = state;
+  const dispatch = (action: PaymentsAction) => {
+    const next = paymentsReducer(state, action);
+    const url = `/payments?${serializePaymentsUrl(next, referenceTime)}`;
+    if (action.type === "filters" && action.filters.search !== filters.search)
+      window.history.replaceState(null, "", url);
+    else window.history.pushState(null, "", url);
+    rawDispatch(action);
+  };
+  useEffect(() => {
+    const restore = () =>
+      rawDispatch({
+        type: "restore",
+        state: parsePaymentsUrl(new URLSearchParams(window.location.search)),
+      });
+    window.addEventListener("popstate", restore);
+    return () => window.removeEventListener("popstate", restore);
+  }, []);
   const setFilters = (filters: PaymentFilters) =>
     dispatch({ type: "filters", filters });
   const reset = () => dispatch({ type: "reset" });
@@ -42,6 +63,7 @@ export function PaymentsWorkspace({
       search={
         <Input
           type="search"
+          maxLength={200}
           aria-label="Search payments by ID, email or last 4 digits"
           placeholder="Search by ID, email or last 4 digits"
           value={filters.search}
@@ -62,6 +84,7 @@ export function PaymentsWorkspace({
           referenceTime={referenceTime}
           sort={sort}
           onSort={(key) => dispatch({ type: "sort", key })}
+          returnTo={`/payments?${serializePaymentsUrl(state, referenceTime)}`}
         />
       ) : (
         <section className={styles.empty}>

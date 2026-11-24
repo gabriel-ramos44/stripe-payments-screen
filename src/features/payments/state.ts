@@ -13,6 +13,7 @@ export type PaymentsState = {
   pageSize: PageSize;
 };
 export type PaymentsAction =
+  | { type: "restore"; state: PaymentsState }
   | { type: "filters"; filters: PaymentFilters }
   | { type: "reset" }
   | { type: "sort"; key: SortKey }
@@ -31,6 +32,8 @@ export function paymentsReducer(
   action: PaymentsAction,
 ): PaymentsState {
   switch (action.type) {
+    case "restore":
+      return action.state;
     case "filters":
       return { ...state, filters: action.filters, page: 1 };
     case "reset":
