@@ -1,13 +1,12 @@
 "use client";
 
-import { useId, useState } from "react";
+import { useId, useState, type ReactNode } from "react";
 import {
   CalendarDays,
   CircleDollarSign,
   CreditCard,
   Download,
   PlusCircle,
-  Settings,
   X,
 } from "lucide-react";
 import { Button, Input, Popover } from "@/components/ui/primitives";
@@ -37,10 +36,12 @@ export function PaymentsFilters({
   filters,
   onChange,
   onReset,
+  columnControls,
 }: {
   filters: PaymentFilters;
   onChange: (filters: PaymentFilters) => void;
   onReset: () => void;
+  columnControls: ReactNode;
 }) {
   return (
     <>
@@ -174,13 +175,7 @@ export function PaymentsFilters({
             <Download />
             Export
           </Button>
-          <Button
-            disabled
-            title="Optional column customization is not implemented"
-          >
-            <Settings />
-            Edit columns
-          </Button>
+          {columnControls}
         </div>
       </div>
     </>

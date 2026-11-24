@@ -1,5 +1,10 @@
 import assert from "node:assert/strict";
 import {
+  defaultColumnOrder,
+  reorderColumns,
+  resizeColumn,
+} from "../src/features/payments/columns.ts";
+import {
   parsePaymentsUrl,
   serializePaymentsUrl,
 } from "../src/features/payments/url-state.ts";
@@ -197,6 +202,12 @@ assert.equal(paginatePayments(payments.slice(0, 26), 99, 25).currentPage, 2);
 assert.equal(paginatePayments([], 20, 25).first, 0);
 assert.equal(paginatePayments([], 20, 25).last, 0);
 const state = { ...initialPaymentsState(), page: 10 };
+assert.equal(resizeColumn("amount", 5), 115);
+assert.equal(resizeColumn("amount", 900), 600);
+assert.deepEqual(
+  reorderColumns(defaultColumnOrder(), "customer", "amount").slice(0, 2),
+  ["customer", "amount"],
+);
 const roundtrip: ReturnType<typeof initialPaymentsState> = {
   ...initialPaymentsState(),
   filters: {

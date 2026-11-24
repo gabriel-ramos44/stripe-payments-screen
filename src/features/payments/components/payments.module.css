@@ -35,7 +35,7 @@
 .table tr:hover td {
   background: #f8f9fc;
 }
-.table th:first-child,
+.table th[data-column="amount"],
 .amount {
   text-align: right;
 }
@@ -171,6 +171,76 @@
   .filterForm {
     width: min(260px, calc(100vw - 70px));
   }
+}
+.table td {
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.headerContent {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+}
+.dragHandle {
+  display: inline-grid;
+  place-items: center;
+  padding: 0;
+  width: 12px;
+  height: 20px;
+  border: 0;
+  background: transparent;
+  color: #687385;
+  cursor: grab;
+  opacity: 0;
+}
+.table th:hover .dragHandle,
+.dragHandle:focus-visible {
+  opacity: 1;
+}
+.resizeHandle {
+  position: absolute;
+  right: 0;
+  top: 4px;
+  bottom: 4px;
+  width: 5px;
+  cursor: col-resize;
+  touch-action: none;
+  border-right: 2px solid transparent;
+}
+.resizeHandle:hover,
+.resizeHandle:focus-visible {
+  border-right-color: var(--accent);
+}
+.columnSettings {
+  display: grid;
+  gap: 12px;
+  width: min(290px, calc(100vw - 70px));
+}
+.columnSetting {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 4px;
+  align-items: center;
+  font-size: 12px;
+  border-top: 1px solid var(--border);
+  padding-top: 6px;
+}
+.columnSetting label {
+  grid-column: 1 / -1;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 11px;
+  color: var(--muted);
+}
+.columnSetting input {
+  flex: 1;
+  accent-color: var(--accent);
+  min-width: 0;
+}
+.columnSetting output {
+  width: 40px;
+  text-align: right;
 }
 .date {
   cursor: help;

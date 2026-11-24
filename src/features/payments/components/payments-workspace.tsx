@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useMemo, useReducer } from "react";
+import { useEffect, useMemo, useReducer, useState } from "react";
 import { DashboardShell } from "@/components/dashboard/dashboard-shell";
 import { Input, Button } from "@/components/ui/primitives";
 import type { Payment } from "../types";
@@ -19,6 +19,14 @@ import { parsePaymentsUrl, serializePaymentsUrl } from "../url-state";
 import { PaymentsTable } from "./payments-table";
 import { PaymentsFilters } from "./payments-filters";
 import { PaymentsPagination } from "./payments-pagination";
+import { ColumnSettings } from "./column-settings";
+import {
+  defaultColumnOrder,
+  reorderColumns,
+  resizeColumn,
+  type ColumnId,
+  type ColumnWidths,
+} from "../columns";
 import styles from "./payments.module.css";
 
 export function PaymentsWorkspace({
@@ -32,6 +40,15 @@ export function PaymentsWorkspace({
 }) {
   const [state, rawDispatch] = useReducer(paymentsReducer, initialState);
   const { filters, sort, page, pageSize } = state;
+  const [columnOrder, setColumnOrder] = useState(defaultColumnOrder);
+  const [columnWidths, setColumnWidths] = useState<ColumnWidths>({});
+  const [columnNotice, setColumnNotice] = useState("");
+  const moveColumn = (source: ColumnId, target: ColumnId) => {
+    setColumnOrder((order) => reorderColumns(order, source, target));
+    setColumnNotice(`Moved ${source} column to the ${target} position.`);
+  };
+  const changeColumnWidth = (id: ColumnId, width: number) =>
+    setColumnWidths((widths) => ({ ...widths, [id]: resizeColumn(id, width) }));
   const dispatch = (action: PaymentsAction) => {
     const next = paymentsReducer(state, action);
     const url = `/payments?${serializePaymentsUrl(next, referenceTime)}`;
@@ -77,7 +94,23 @@ export function PaymentsWorkspace({
         filters={filters}
         onChange={setFilters}
         onReset={reset}
+        columnControls={
+          <ColumnSettings
+            order={columnOrder}
+            widths={columnWidths}
+            onMove={moveColumn}
+            onResize={changeColumnWidth}
+            onReset={() => {
+              setColumnOrder(defaultColumnOrder());
+              setColumnWidths({});
+              setColumnNotice("Columns reset to the default order and widths.");
+            }}
+          />
+        }
       />
+      <p className="sr-only" role="status">
+        {columnNotice}
+      </p>
       {filtered.length ? (
         <PaymentsTable
           payments={pagination.rows}
@@ -85,6 +118,10 @@ export function PaymentsWorkspace({
           sort={sort}
           onSort={(key) => dispatch({ type: "sort", key })}
           returnTo={`/payments?${serializePaymentsUrl(state, referenceTime)}`}
+          columnOrder={columnOrder}
+          columnWidths={columnWidths}
+          onColumnMove={moveColumn}
+          onColumnResize={changeColumnWidth}
         />
       ) : (
         <section className={styles.empty}>

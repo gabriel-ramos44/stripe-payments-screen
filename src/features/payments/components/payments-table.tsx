@@ -2,21 +2,14 @@
 
 import { useEffect, useState } from "react";
 import Link from "next/link";
-import {
-  ArrowDown,
-  ArrowUp,
-  ArrowUpDown,
-  Check,
-  Copy,
-  Landmark,
-  Wallet,
-  X,
-} from "lucide-react";
+import { Check, Copy, Landmark, Wallet, X } from "lucide-react";
 import { Button, StatusBadge, Tooltip } from "@/components/ui/primitives";
 import type { Payment } from "../types";
 import { formatAmount, formatCreated, formatRelative } from "../format";
 import type { PaymentSort, SortKey } from "../query";
 import styles from "./payments.module.css";
+import { columnDefinition, type ColumnId, type ColumnWidths } from "../columns";
+import { ColumnHeader } from "./column-header";
 
 export function PaymentsTable({
   payments,
@@ -24,12 +17,20 @@ export function PaymentsTable({
   sort,
   onSort,
   returnTo = "/payments",
+  columnOrder,
+  columnWidths,
+  onColumnMove,
+  onColumnResize,
 }: {
   payments: readonly Payment[];
   referenceTime: string;
   sort: PaymentSort;
   onSort: (key: SortKey) => void;
   returnTo?: string;
+  columnOrder: ColumnId[];
+  columnWidths: ColumnWidths;
+  onColumnMove: (source: ColumnId, target: ColumnId) => void;
+  onColumnResize: (id: ColumnId, width: number) => void;
 }) {
   const [copiedId, setCopiedId] = useState<string | null>(null);
   const [notice, setNotice] = useState("");
@@ -75,88 +76,136 @@ export function PaymentsTable({
         aria-label="Payments table, scroll horizontally for more columns"
         tabIndex={0}
       >
-        <table className={styles.table}>
+        <table
+          className={styles.table}
+          style={
+            Object.keys(columnWidths).length
+              ? {
+                  tableLayout: "fixed",
+                  width: columnOrder.reduce(
+                    (sum, id) =>
+                      sum + (columnWidths[id] ?? columnDefinition(id).width),
+                    0,
+                  ),
+                }
+              : undefined
+          }
+        >
+          {Object.keys(columnWidths).length > 0 && (
+            <colgroup>
+              {columnOrder.map((id) => (
+                <col
+                  key={id}
+                  style={{
+                    width: columnWidths[id] ?? columnDefinition(id).width,
+                  }}
+                />
+              ))}
+            </colgroup>
+          )}
           <caption className="sr-only">
             Payments. Created dates are displayed in Brasília time.
           </caption>
           <thead>
             <tr>
-              <SortHeader
-                label="Amount"
-                column="amountMinor"
-                sort={sort}
-                onSort={onSort}
-              />
-              <SortHeader
-                label="Status"
-                column="status"
-                sort={sort}
-                onSort={onSort}
-              />
-              <th scope="col">Payment method</th>
-              <th scope="col">Description</th>
-              <th scope="col">Customer</th>
-              <SortHeader
-                label="Created"
-                column="createdAt"
-                sort={sort}
-                onSort={onSort}
-              />
-              <th scope="col">Payment ID</th>
+              {columnOrder.map((id) => (
+                <ColumnHeader
+                  key={id}
+                  id={id}
+                  order={columnOrder}
+                  sort={sort}
+                  onSort={onSort}
+                  onMove={onColumnMove}
+                  onResize={onColumnResize}
+                  width={columnWidths[id] ?? columnDefinition(id).width}
+                />
+              ))}
             </tr>
           </thead>
           <tbody>
-            {payments.map((payment) => (
-              <tr key={payment.id}>
-                <td className={styles.amount}>
-                  {formatAmount(payment.amountMinor, payment.currency)}
-                  <span className={styles.currency}>{payment.currency}</span>
-                </td>
-                <td>
-                  <StatusBadge status={payment.status} />
-                </td>
-                <td>
-                  <PaymentMethodCell method={payment.method} />
-                </td>
-                <td className={styles.muted}>{payment.description}</td>
-                <td>
-                  <span className={styles.customerName}>
-                    {payment.customer.name}
-                  </span>
-                  <span className={styles.email}>{payment.customer.email}</span>
-                </td>
-                <td>
-                  <CreatedDate
-                    value={payment.createdAt}
-                    referenceTime={referenceTime}
-                  />
-                </td>
-                <td>
-                  <div className={styles.paymentId}>
-                    <Link
-                      href={`/payments/${encodeURIComponent(payment.id)}?at=${encodeURIComponent(referenceTime)}&returnTo=${encodeURIComponent(returnTo)}`}
-                      title={payment.id}
-                      aria-label={`View payment ${payment.id}`}
-                      className={styles.idText}
+            {payments.map((payment) => {
+              const cells = {
+                amount: (
+                  <>
+                    {formatAmount(payment.amountMinor, payment.currency)}
+                    <span className={styles.currency}>{payment.currency}</span>
+                  </>
+                ),
+                status: (
+                  <>
+                    <StatusBadge status={payment.status} />
+                  </>
+                ),
+                method: (
+                  <>
+                    <PaymentMethodCell method={payment.method} />
+                  </>
+                ),
+                description: <> {payment.description} </>,
+                customer: (
+                  <>
+                    <span className={styles.customerName}>
+                      {payment.customer.name}
+                    </span>
+                    <span className={styles.email}>
+                      {payment.customer.email}
+                    </span>
+                  </>
+                ),
+                created: (
+                  <>
+                    <CreatedDate
+                      value={payment.createdAt}
+                      referenceTime={referenceTime}
+                    />
+                  </>
+                ),
+                id: (
+                  <>
+                    <div className={styles.paymentId}>
+                      <Link
+                        href={`/payments/${encodeURIComponent(payment.id)}?at=${encodeURIComponent(referenceTime)}&returnTo=${encodeURIComponent(returnTo)}`}
+                        title={payment.id}
+                        aria-label={`View payment ${payment.id}`}
+                        className={styles.idText}
+                      >
+                        {payment.id.slice(0, 12)}…{payment.id.slice(-4)}
+                      </Link>
+                      <Button
+                        variant="ghost"
+                        iconOnly
+                        aria-label={`Copy payment ID ${payment.id}`}
+                        onClick={() => void copyId(payment.id)}
+                      >
+                        {copiedId === payment.id ? (
+                          <Check aria-hidden="true" />
+                        ) : (
+                          <Copy aria-hidden="true" />
+                        )}
+                      </Button>
+                    </div>
+                  </>
+                ),
+              };
+              return (
+                <tr key={payment.id}>
+                  {columnOrder.map((id) => (
+                    <td
+                      key={id}
+                      className={
+                        id === "amount"
+                          ? styles.amount
+                          : id === "description"
+                            ? styles.muted
+                            : undefined
+                      }
                     >
-                      {payment.id.slice(0, 12)}…{payment.id.slice(-4)}
-                    </Link>
-                    <Button
-                      variant="ghost"
-                      iconOnly
-                      aria-label={`Copy payment ID ${payment.id}`}
-                      onClick={() => void copyId(payment.id)}
-                    >
-                      {copiedId === payment.id ? (
-                        <Check aria-hidden="true" />
-                      ) : (
-                        <Copy aria-hidden="true" />
-                      )}
-                    </Button>
-                  </div>
-                </td>
-              </tr>
-            ))}
+                      {cells[id]}
+                    </td>
+                  ))}
+                </tr>
+              );
+            })}
           </tbody>
         </table>
       </div>
@@ -183,46 +232,6 @@ function CreatedDate({
         {formatCreated(value)}
       </time>
     </Tooltip>
-  );
-}
-
-function SortHeader({
-  label,
-  column,
-  sort,
-  onSort,
-}: {
-  label: string;
-  column: SortKey;
-  sort: PaymentSort;
-  onSort: (key: SortKey) => void;
-}) {
-  const active = sort.key === column;
-  const Icon = active
-    ? sort.direction === "asc"
-      ? ArrowUp
-      : ArrowDown
-    : ArrowUpDown;
-  return (
-    <th
-      scope="col"
-      aria-sort={
-        active
-          ? sort.direction === "asc"
-            ? "ascending"
-            : "descending"
-          : "none"
-      }
-    >
-      <button
-        className={styles.sortButton}
-        onClick={() => onSort(column)}
-        aria-label={`Sort by ${label.toLowerCase()} ${active && sort.direction === "asc" ? "descending" : "ascending"}`}
-      >
-        {label}
-        <Icon size={12} aria-hidden="true" />
-      </button>
-    </th>
   );
 }
 
