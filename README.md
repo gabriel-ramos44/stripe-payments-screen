@@ -15,7 +15,7 @@ npm ci
 npm run dev
 ```
 
-Open http://127.0.0.1:3000/payments. Servers bind to loopback by default.
+Open http://localhost:3000/payments. Servers bind to loopback by default.
 For a production preview, run `npm run build` followed by `npm start`.
 No environment variables or external fonts are required.
 

@@ -17,7 +17,7 @@ adding collaborators and sending the submission email require a later instructio
 ## Local reviewer walkthrough
 
 1. Run `npm ci`, `npm run check`, then `npm run test:e2e` (installed Chrome required).
-2. Run `npm start` and open `http://127.0.0.1:3000/payments`.
+2. Run `npm start` and open `http://localhost:3000/payments`.
 3. Search by email/ID/last-four; combine status/method/date/currency/amount filters.
 4. Sort and paginate; reload the resulting URL or navigate browser back/forward.
 5. Open a payment ID; inspect details/timeline/metadata and return to the same view.
